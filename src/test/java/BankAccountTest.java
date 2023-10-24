@@ -4,44 +4,59 @@ import org.junit.jupiter.api.Test;
 
 public class BankAccountTest {
 
-	private Savings savings;
-	private Checking checking;
-	private CertificateOfDeposit certificateOfDeposit;
+	private final double TEST_BALANCE = 10;
+	private final double TEST_APR = 5;
+	private final double TEST_TRANSACTION = 2.5;
+	private Account account;
 
 	@Test
-	public void savings_and_checkings_when_created_has_0_balance() {
-		savings = new Savings(0);
-		checking = new Checking(0);
-		assertEquals(0, savings.balance() + checking.balance());
+	public void account_balance_when_withdrawn_from_does_not_go_below_zero() {
+		account = new Savings(0);
+		account.withdraw(TEST_TRANSACTION);
+
+		assertEquals(0, account.balance());
+	}
+
+	@Test
+	public void account_when_created_has_supplied_apr_value() {
+		account = new Savings(TEST_APR);
+		assertEquals(TEST_APR, account.apr());
+	}
+
+	@Test
+	public void account_balance_increases_when_deposited_into() {
+		account = new Savings(0);
+		account.deposit(TEST_TRANSACTION);
+
+		assertEquals(TEST_TRANSACTION, account.balance());
 
 	}
 
 	@Test
-	public void certificate_of_deposit_when_created_has_supplied_starting_balance() {
-		certificateOfDeposit = new CertificateOfDeposit(10, 0);
-		assertEquals(10, certificateOfDeposit.balance());
+	public void account_balance_decreases_when_withdrawn_from() {
+		account = new Savings(0);
+		account.deposit(TEST_BALANCE);
+		account.withdraw(TEST_TRANSACTION);
+
+		assertEquals(TEST_BALANCE - TEST_TRANSACTION, account.balance());
 	}
 
 	@Test
-	public void all_accounts_when_created_has_supplied_apr_value() {
-		savings = new Savings(5);
-		checking = new Checking(5);
-		certificateOfDeposit = new CertificateOfDeposit(0, 5);
-		assertEquals(15, savings.apr() + checking.apr() + certificateOfDeposit.apr());
+	public void account_when_deposited_twice_into_works() {
+		account = new Savings(0);
+		account.deposit(TEST_TRANSACTION);
+		account.deposit(TEST_TRANSACTION);
+
+		assertEquals(TEST_TRANSACTION * 2, account.balance());
 	}
 
 	@Test
-	public void all_accounts_balances_increases_when_deposited_into() {
-		final double TEST_DEPOSIT = 5.50;
-		savings = new Savings(0);
-		checking = new Checking(0);
-		certificateOfDeposit = new CertificateOfDeposit(0, 0);
-		savings.deposit(TEST_DEPOSIT);
-		checking.deposit(TEST_DEPOSIT);
-		certificateOfDeposit.deposit(TEST_DEPOSIT);
+	public void account_when_withdrawn_from_twice_works() {
+		account = new Savings(0);
+		account.deposit(TEST_BALANCE);
+		account.withdraw(TEST_TRANSACTION);
+		account.withdraw(TEST_TRANSACTION);
 
-		assertEquals(TEST_DEPOSIT * 3, checking.balance() + savings.balance() + certificateOfDeposit.balance());
-
+		assertEquals(TEST_BALANCE - (TEST_TRANSACTION * 2), account.balance());
 	}
-
 }
