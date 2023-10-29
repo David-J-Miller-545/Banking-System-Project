@@ -8,7 +8,7 @@ public class SavingsTest {
 
 	@Test
 	public void savings_when_created_has_0_balance() {
-		account = new Savings(0);
+		account = new Savings(10000001, 0);
 		assertEquals(0, account.balance());
 	}
 }

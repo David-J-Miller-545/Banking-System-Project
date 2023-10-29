@@ -12,7 +12,7 @@ public class BankTest {
 	@BeforeEach
 	public void setUp() {
 		bank = new Bank();
-		account = new Checking(0);
+		account = new Checking(1000001, 0);
 
 	}
 
@@ -30,7 +30,7 @@ public class BankTest {
 
 	@Test
 	public void bank_has_two_accounts_when_two_are_added_to_it() {
-		Account account1 = new Checking(0);
+		Account account1 = new Checking(10000002, 0);
 		bank.addAccount(account);
 		bank.addAccount(account1);
 

@@ -1,5 +1,5 @@
 public class Checking extends Account {
-	public Checking(double apr) {
-		super(0, apr);
+	public Checking(int id, double apr) {
+		super(id, 0, apr);
 	}
 }

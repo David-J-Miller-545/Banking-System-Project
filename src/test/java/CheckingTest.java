@@ -8,7 +8,7 @@ public class CheckingTest {
 
 	@Test
 	public void checking_when_created_has_0_balance() {
-		account = new Checking(0);
+		account = new Checking(10000001, 0);
 		assertEquals(0, account.balance());
 	}
 }

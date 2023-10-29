@@ -1,15 +1,12 @@
-import java.util.Random;
-
 public abstract class Account {
-	Random rnd = new Random();
 	private double balance;
 	private double apr;
 	private int id;
 
-	public Account(double balance, double apr) {
+	public Account(int id, double balance, double apr) {
 		this.balance = balance;
 		this.apr = apr;
-		id = 10000000 + rnd.nextInt(90000000);
+		this.id = id;
 	}
 
 	public double balance() {

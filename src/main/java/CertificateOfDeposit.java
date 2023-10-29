@@ -1,7 +1,7 @@
 public class CertificateOfDeposit extends Account {
 
-	public CertificateOfDeposit(double balance, double apr) {
-		super(balance, apr);
+	public CertificateOfDeposit(int id, double balance, double apr) {
+		super(id, balance, apr);
 	}
 
 }

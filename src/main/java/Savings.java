@@ -1,5 +1,5 @@
 public class Savings extends Account {
-	public Savings(double apr) {
-		super(0, apr);
+	public Savings(int id, double apr) {
+		super(id, 0, apr);
 	}
 }

@@ -8,7 +8,7 @@ public class CertificateOfDepositTest {
 
 	@Test
 	public void certificate_of_deposit_when_created_has_supplied_starting_balance() {
-		account = new CertificateOfDeposit(10, 0);
+		account = new CertificateOfDeposit(10000001, 10, 0);
 		assertEquals(10, account.balance());
 	}
 }
