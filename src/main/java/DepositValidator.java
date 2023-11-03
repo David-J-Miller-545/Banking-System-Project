@@ -11,11 +11,17 @@ public class DepositValidator extends CommandValidator {
 			int id = Integer.parseInt(arguments[1]);
 			double depositAmount = Double.parseDouble(arguments[2]);
 
-			if (arguments[0].equals("deposit")) {
-				if (validateID(id) && accountExists(id)) {
-
+			if (commandKeyword.equals("deposit")) {
+				Account account = bank.getAccount(id);
+				if (validateID(id) && (account instanceof Savings || account instanceof Checking)) {
 					if (!(depositAmount < 0)) {
-						return true;
+						if (account instanceof Savings && depositAmount <= 2500) {
+							return true;
+						} else if (account instanceof Checking && depositAmount <= 1000) {
+							return true;
+						} else {
+							return false;
+						}
 					} else {
 						return false;
 					}

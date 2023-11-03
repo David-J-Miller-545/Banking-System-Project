@@ -43,4 +43,39 @@ public class DepositValidatorTest {
 		assertFalse(depositValidator.validate("deposit 12345678 -0.01"));
 	}
 
+	@Test
+	public void validator_accepts_checking_account_type() {
+		account = new Checking(12345678, .5);
+		bank.addAccount(account);
+		assertTrue(depositValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
+	}
+
+	@Test
+	public void validator_accepts_savings_account_type() {
+		account = new Savings(12345678, .5);
+		bank.addAccount(account);
+		assertTrue(depositValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
+	}
+
+	@Test
+	public void validator_refuses_cd_account_type() {
+		account = new CertificateOfDeposit(12345679, 1200.50, .5);
+		bank.addAccount(account);
+		assertFalse(depositValidator.validate("deposit 12345679 500"));
+	}
+
+	@Test
+	public void validator_refuses_savings_deposits_over_2500() {
+		account = new Savings(12345678, .5);
+		bank.addAccount(account);
+		assertFalse(depositValidator.validate("deposit 12345678 2500.01"));
+	}
+
+	@Test
+	public void validator_refuses_checking_deposits_over_1000() {
+		account = new Checking(12345678, .5);
+		bank.addAccount(account);
+		assertFalse(depositValidator.validate("deposit 12345678 1000.01"));
+	}
+
 }
