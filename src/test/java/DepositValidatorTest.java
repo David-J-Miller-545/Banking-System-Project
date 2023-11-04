@@ -52,6 +52,26 @@ public class DepositValidatorTest {
 		assertFalse(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
 	}
 
+	// ---Argument Count Tests---
+
+	@Test
+	public void valid_if_command_contains_3_arguments() {
+		defaultGeneralAccountTestSetUp();
+		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
+	}
+
+	@Test
+	public void invalid_if_given_more_than_3_arguments() {
+		defaultGeneralAccountTestSetUp();
+		assertFalse(commandValidator.validate("deposit 12345678 500 Nope"));
+	}
+
+	@Test
+	public void invalid_if_given_less_than_3_arguments() {
+		defaultGeneralAccountTestSetUp();
+		assertFalse(commandValidator.validate("deposit 12345678"));
+	}
+
 	// ---ID Account Type Tests---
 
 	@Test
@@ -79,6 +99,12 @@ public class DepositValidatorTest {
 	public void invalid_if_deposit_amount_is_negative() {
 		defaultGeneralAccountTestSetUp();
 		assertFalse(commandValidator.validate("deposit 12345678 -0.01"));
+	}
+
+	@Test
+	public void valid_if_deposit_amount_is_0() {
+		defaultGeneralAccountTestSetUp();
+		assertTrue(commandValidator.validate("deposit 12345678 0"));
 	}
 
 	@Test

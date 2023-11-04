@@ -7,12 +7,11 @@ public class DepositValidator {
 
 	public boolean validate(String[] arguments) {
 		try {
-			String commandKeyword = arguments[0];
 			int id = Integer.parseInt(arguments[1]);
 			double depositAmount = Double.parseDouble(arguments[2]);
 
-			if (commandKeyword.equals("deposit")) {
-				Account account = bank.getAccount(id);
+			Account account = bank.getAccount(id);
+			if (arguments.length == 3) {
 				if (account instanceof Savings || account instanceof Checking) {
 					if (!(depositAmount < 0)) {
 						if (account instanceof Savings && depositAmount <= 2500) {
@@ -31,6 +30,7 @@ public class DepositValidator {
 			} else {
 				return false;
 			}
+
 		} catch (Exception e) {
 			return false;
 		}
