@@ -1,7 +1,17 @@
-public class CreateValidator extends CommandValidator {
+public class CreateValidator {
+
+	private Bank bank;
 
 	public CreateValidator(Bank bank) {
-		super(bank);
+		this.bank = bank;
+	}
+
+	public boolean validateID(int id) {
+		return ((id / 10000000) < 10 && (id / 10000000) > 0) ? true : false;
+	}
+
+	public boolean accountExists(int id) {
+		return (bank.getAccount(id) instanceof Account) ? true : false;
 	}
 
 	public boolean validateIdAndAPR(int id, double apr) {
@@ -16,8 +26,7 @@ public class CreateValidator extends CommandValidator {
 		return (0 <= apr && apr <= 10) ? true : false;
 	}
 
-	public boolean validate(String command) {
-		String[] arguments = readCommandArguments(command);
+	public boolean validate(String[] arguments) {
 		try {
 			String commandKeyword = arguments[0];
 			String accountType = arguments[1];

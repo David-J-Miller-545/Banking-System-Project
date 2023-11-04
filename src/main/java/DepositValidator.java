@@ -1,11 +1,11 @@
-public class DepositValidator extends CommandValidator {
+public class DepositValidator {
+	private Bank bank;
 
 	public DepositValidator(Bank bank) {
-		super(bank);
+		this.bank = bank;
 	}
 
-	public boolean validate(String command) {
-		String[] arguments = readCommandArguments(command);
+	public boolean validate(String[] arguments) {
 		try {
 			String commandKeyword = arguments[0];
 			int id = Integer.parseInt(arguments[1]);
@@ -13,7 +13,7 @@ public class DepositValidator extends CommandValidator {
 
 			if (commandKeyword.equals("deposit")) {
 				Account account = bank.getAccount(id);
-				if (validateID(id) && (account instanceof Savings || account instanceof Checking)) {
+				if (account instanceof Savings || account instanceof Checking) {
 					if (!(depositAmount < 0)) {
 						if (account instanceof Savings && depositAmount <= 2500) {
 							return true;

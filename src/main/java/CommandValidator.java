@@ -1,8 +1,12 @@
-public abstract class CommandValidator {
+public class CommandValidator {
 	Bank bank;
+	CreateValidator createValidator;
+	DepositValidator depositValidator;
 
 	public CommandValidator(Bank bank) {
 		this.bank = bank;
+		createValidator = new CreateValidator(bank);
+		depositValidator = new DepositValidator(bank);
 	}
 
 	public String[] readCommandArguments(String command) {
@@ -16,11 +20,17 @@ public abstract class CommandValidator {
 		return command.split(" ", count);
 	}
 
-	public boolean accountExists(int id) {
-		return (bank.getAccount(id) instanceof Account) ? true : false;
+	public boolean validate(String command) {
+		String[] arguments = readCommandArguments(command);
+		switch (arguments[0]) {
+		case "create":
+			return createValidator.validate(arguments);
+		case "deposit":
+			return depositValidator.validate(arguments);
+		default:
+			return false;
+		}
+
 	}
 
-	public boolean validateID(int id) {
-		return ((id / 10000000) < 10 && (id / 10000000) > 0) ? true : false;
-	}
 }
