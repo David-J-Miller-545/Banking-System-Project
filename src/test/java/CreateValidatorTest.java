@@ -105,8 +105,18 @@ public class CreateValidatorTest {
 	}
 
 	@Test
-	public void invalid_if_given_anything_but_an_8_digit_id() {
+	public void invalid_if_id_given_has_over_8_digits() {
 		assertFalse(commandValidator.validate("create savings 123456789 0.6"));
+	}
+
+	@Test
+	public void invalid_if_id_given_has_under_8_digits() {
+		assertFalse(commandValidator.validate("create savings 1234567 0.6"));
+	}
+
+	@Test
+	public void invalid_if_given_anything_but_an_8_digit_id() {
+		assertFalse(commandValidator.validate("create savings 8digitID 0.6"));
 	}
 
 	@Test

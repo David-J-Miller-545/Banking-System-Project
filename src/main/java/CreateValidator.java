@@ -11,7 +11,7 @@ public class CreateValidator {
 	}
 
 	public boolean accountExists(int id) {
-		return (bank.getAccount(id) instanceof Account) ? true : false;
+		return (bank.getAccount(id) != null) ? true : false;
 	}
 
 	public boolean validateIdAndAPR(int id, double apr) {
