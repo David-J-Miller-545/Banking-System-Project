@@ -1,4 +1,5 @@
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,11 +12,6 @@ public class CommandValidatorTest {
 	public void setUp() {
 		bank = new Bank();
 		commandValidator = new CommandValidator(bank);
-	}
-
-	@Test
-	public void validator_reads_a_set_number_arguments() {
-		assertEquals(4, commandValidator.readCommandArguments("(arg1) (arg2) (arg3) (arg4)").length);
 	}
 
 	@Test

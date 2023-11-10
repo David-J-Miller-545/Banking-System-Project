@@ -1,23 +1,11 @@
-public class CommandValidator {
-	Bank bank;
-	CreateValidator createValidator;
-	DepositValidator depositValidator;
+public class CommandValidator extends CommandFunction {
+	private CreateValidator createValidator;
+	private DepositValidator depositValidator;
 
 	public CommandValidator(Bank bank) {
-		this.bank = bank;
+		super(bank);
 		createValidator = new CreateValidator(bank);
 		depositValidator = new DepositValidator(bank);
-	}
-
-	public String[] readCommandArguments(String command) {
-		int count = 1;
-		command = command.toLowerCase();
-		for (int i = 0; i < command.length(); i++) {
-			if (command.charAt(i) == ' ') {
-				count++;
-			}
-		}
-		return command.split(" ", count);
 	}
 
 	public boolean validate(String command) {
