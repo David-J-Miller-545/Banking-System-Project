@@ -1,3 +1,5 @@
+package banking;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,7 +30,7 @@ public class CreateValidatorTest {
 		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
 	}
 
-	// ---Account Type Tests---
+	// ---banking.Account Type Tests---
 
 	@Test
 	public void valid_if_creating_savings_account() {
@@ -52,7 +54,7 @@ public class CreateValidatorTest {
 
 	// ---Argument Count Tests---
 
-	// Savings
+	// banking.Savings
 	@Test
 	public void invalid_if_given_more_than_4_arguments_for_creating_a_savings_account() {
 		assertFalse(commandValidator.validate("create savings 12345678 0.6 Nope"));
@@ -63,7 +65,7 @@ public class CreateValidatorTest {
 		assertFalse(commandValidator.validate("create savings 12345678"));
 	}
 
-	// Checking
+	// banking.Checking
 
 	@Test
 	public void valid_if_command_contains_4_arguments_for_creating_a_checking_account() {

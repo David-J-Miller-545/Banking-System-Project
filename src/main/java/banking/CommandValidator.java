@@ -1,3 +1,5 @@
+package banking;
+
 public class CommandValidator extends CommandFunction {
 	private CreateValidator createValidator;
 	private DepositValidator depositValidator;

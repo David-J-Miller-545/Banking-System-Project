@@ -1,3 +1,5 @@
+package banking;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -72,7 +74,7 @@ public class DepositValidatorTest {
 		assertFalse(commandValidator.validate("deposit 12345678"));
 	}
 
-	// ---ID Account Type Tests---
+	// ---ID banking.Account Type Tests---
 
 	@Test
 	public void valid_if_given_id_belong_to_a_checking_account() {

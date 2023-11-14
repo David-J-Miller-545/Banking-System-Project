@@ -1,3 +1,5 @@
+package banking;
+
 public class CreateValidator {
 
 	private Bank bank;
@@ -58,7 +60,7 @@ public class CreateValidator {
 				} else {
 					return false;
 				}
-			} else { // Account type is not checking, savings, or cd
+			} else { // banking.Account type is not checking, savings, or cd
 				return false;
 			}
 

@@ -1,3 +1,5 @@
+package banking;
+
 public abstract class CommandFunction {
 	private Bank bank;
 

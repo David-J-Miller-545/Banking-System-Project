@@ -1,3 +1,5 @@
+package banking;
+
 public class CommandProcessor extends CommandFunction {
 	private CreateProcessor createProcessor;
 	private DepositProcessor depositProcessor;
