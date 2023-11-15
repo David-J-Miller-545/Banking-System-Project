@@ -7,7 +7,7 @@ public class CreateValidator {
 	}
 
 	public boolean validateID(int id) {
-		return ((id / 10000000) < 10 && (id / 10000000) > 0) ? true : false;
+		return (Integer.toString(id).length() == 8);
 	}
 
 	public boolean accountExists(int id) {

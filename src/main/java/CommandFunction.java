@@ -8,11 +8,6 @@ public abstract class CommandFunction {
 	public String[] readCommandArguments(String command) {
 		int count = 1;
 		command = command.toLowerCase();
-		for (int i = 0; i < command.length(); i++) {
-			if (command.charAt(i) == ' ') {
-				count++;
-			}
-		}
-		return command.split(" ", count);
+		return command.split(" ");
 	}
 }
