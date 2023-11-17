@@ -156,6 +156,16 @@ public class CreateValidatorTest {
 	}
 
 	@Test
+	public void valid_if_given_cd_initial_balance_is_1000() {
+		assertTrue(commandValidator.validate("create cd 12345678 0.6 1000"));
+	}
+
+	@Test
+	public void valid_if_given_cd_initial_balance_is_10000() {
+		assertTrue(commandValidator.validate("create cd 12345678 0.6 10000"));
+	}
+
+	@Test
 	void invalid_if_given_cd_initial_balance_is_less_than_1000() {
 		assertFalse(commandValidator.validate("create cd 12345678 0.6 999"));
 	}

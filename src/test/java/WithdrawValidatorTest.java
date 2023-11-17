@@ -4,12 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class DepositValidatorTest {
-	private final String DEFAULT_VALID_GENERAL_TEST_STRING = "deposit 12345678 500";
-
+public class WithdrawValidatorTest {
+	private final String DEFAULT_VALID_GENERAL_TEST_STRING = "withdraw 12345678 250";
+	Account account;
 	private CommandValidator commandValidator;
 	private Bank bank;
-	private Account account;
 
 	@BeforeEach
 	public void setUp() {
@@ -24,17 +23,19 @@ public class DepositValidatorTest {
 	public void defaultCheckingAccountTestSetUp() {
 		account = new Checking(12345678, .5);
 		bank.addAccount(account);
+		account.deposit(750);
 	}
 
 	public void defaultSavingsAccountTestSetUp() {
 		account = new Savings(12345678, .5);
 		bank.addAccount(account);
+		account.deposit(750);
 	}
 
 	// Command Layout: "deposit (existingID) (depositAmount)"
 
 	@Test
-	public void valid_if_first_argument_is_deposit_keyword() {
+	public void valid_if_first_argument_is_withdraw_keyword() {
 		defaultGeneralAccountTestSetUp();
 		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
 	}
@@ -63,13 +64,13 @@ public class DepositValidatorTest {
 	@Test
 	public void invalid_if_given_more_than_3_arguments() {
 		defaultGeneralAccountTestSetUp();
-		assertFalse(commandValidator.validate("deposit 12345678 500 Nope"));
+		assertFalse(commandValidator.validate("withdraw 12345678 500 Nope"));
 	}
 
 	@Test
 	public void invalid_if_given_less_than_3_arguments() {
 		defaultGeneralAccountTestSetUp();
-		assertFalse(commandValidator.validate("deposit 12345678"));
+		assertFalse(commandValidator.validate("withdraw 12345678"));
 	}
 
 	// ---ID Account Type Tests---
@@ -87,60 +88,12 @@ public class DepositValidatorTest {
 	}
 
 	@Test
-	public void invalid_if_given_id_belongs_to_a_cd_account() {
+	public void valid_if_given_id_belongs_to_a_cd_account() {
 		account = new CertificateOfDeposit(12345678, 1200.50, .5);
 		bank.addAccount(account);
-		assertFalse(commandValidator.validate("deposit 12345678 500"));
+		assertTrue(commandValidator.validate("withdraw 12345678 1200.5"));
 	}
 
-	// ---Deposit Amount Tests---
-
-	@Test
-	public void invalid_if_deposit_amount_is_negative() {
-		defaultGeneralAccountTestSetUp();
-		assertFalse(commandValidator.validate("deposit 12345678 -0.01"));
-	}
-
-	@Test
-	public void valid_if_deposit_amount_is_0() {
-		defaultGeneralAccountTestSetUp();
-		assertTrue(commandValidator.validate("deposit 12345678 0"));
-	}
-
-	@Test
-	public void invalid_if_deposit_amount_into_a_savings_account_is_over_2500() {
-		defaultSavingsAccountTestSetUp();
-		assertFalse(commandValidator.validate("deposit 12345678 2500.01"));
-	}
-
-	@Test
-	public void valid_if_deposit_amount_into_a_savings_account_is_2500() {
-		defaultSavingsAccountTestSetUp();
-		assertTrue(commandValidator.validate("deposit 12345678 2500"));
-	}
-
-	@Test
-	public void valid_if_deposit_amount_into_a_savings_account_is_under_2500() {
-		defaultSavingsAccountTestSetUp();
-		assertTrue(commandValidator.validate("deposit 12345678 2499.99"));
-	}
-
-	@Test
-	public void invalid_if_deposit_amount_into_a_checking_account_is_over_1000() {
-		defaultCheckingAccountTestSetUp();
-		assertFalse(commandValidator.validate("deposit 12345678 1000.01"));
-	}
-
-	@Test
-	public void valid_if_deposit_amount_into_a_checking_account_is_1000() {
-		defaultCheckingAccountTestSetUp();
-		assertTrue(commandValidator.validate("deposit 12345678 1000"));
-	}
-
-	@Test
-	public void valid_if_deposit_amount_into_a_checking_account_is_under_1000() {
-		defaultCheckingAccountTestSetUp();
-		assertTrue(commandValidator.validate("deposit 12345678 999.99"));
-	}
+	// ---Withdraw Amount Tests---
 
 }
