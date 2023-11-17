@@ -32,6 +32,11 @@ public class WithdrawValidatorTest {
 		account.deposit(750);
 	}
 
+	private void defaultCertificateOfDepositAccountTestSetUp() {
+		account = new CertificateOfDeposit(12345678, 1200.50, .5);
+		bank.addAccount(account);
+	}
+
 	// Command Layout: "deposit (existingID) (depositAmount)"
 
 	@Test
@@ -89,11 +94,110 @@ public class WithdrawValidatorTest {
 
 	@Test
 	public void valid_if_given_id_belongs_to_a_cd_account() {
-		account = new CertificateOfDeposit(12345678, 1200.50, .5);
-		bank.addAccount(account);
+		defaultCertificateOfDepositAccountTestSetUp();
 		assertTrue(commandValidator.validate("withdraw 12345678 1200.5"));
 	}
 
 	// ---Withdraw Amount Tests---
 
+	@Test
+	public void invalid_if_withdraw_amount_is_negative() {
+		defaultGeneralAccountTestSetUp();
+		assertFalse(commandValidator.validate("withdraw 12345678 -0.01"));
+	}
+
+	@Test
+	public void valid_if_withdraw_amount_is_0() {
+		defaultGeneralAccountTestSetUp();
+		assertTrue(commandValidator.validate("withdraw 12345678 0"));
+	}
+
+	@Test
+	public void invalid_if_withdraw_amount_from_a_savings_account_is_over_1000() {
+		defaultSavingsAccountTestSetUp();
+		assertFalse(commandValidator.validate("withdraw 12345678 1000.01"));
+	}
+
+	@Test
+	public void valid_if_withdraw_amount_from_a_savings_account_is_1000() {
+		defaultSavingsAccountTestSetUp();
+		assertTrue(commandValidator.validate("withdraw 12345678 1000"));
+	}
+
+	@Test
+	public void valid_if_withdraw_amount_from_a_savings_account_is_under_1000() {
+		defaultSavingsAccountTestSetUp();
+		assertTrue(commandValidator.validate("withdraw 12345678 999.99"));
+	}
+
+	@Test
+	public void invalid_if_withdraw_amount_from_a_checking_account_is_over_400() {
+		defaultCheckingAccountTestSetUp();
+		assertFalse(commandValidator.validate("withdraw 12345678 400.01"));
+	}
+
+	@Test
+	public void valid_if_withdraw_amount_from_a_checking_account_is_400() {
+		defaultCheckingAccountTestSetUp();
+		assertTrue(commandValidator.validate("withdraw 12345678 400"));
+	}
+
+	@Test
+	public void valid_if_withdraw_amount_from_a_checking_account_is_under_400() {
+		defaultCheckingAccountTestSetUp();
+		assertTrue(commandValidator.validate("withdraw 12345678 399.99"));
+	}
+
+	@Test
+	public void invalid_if_withdraw_amount_from_a_cd_account_is_under_balance() {
+		defaultCertificateOfDepositAccountTestSetUp();
+		assertFalse(commandValidator.validate("withdraw 12345678 1200.49"));
+	}
+
+	@Test
+	public void valid_if_withdraw_amount_from_a_cd_account_is_the_balance() {
+		defaultCertificateOfDepositAccountTestSetUp();
+		assertTrue(commandValidator.validate("withdraw 12345678 1200.50"));
+	}
+
+	@Test
+	public void valid_if_withdraw_amount_from_a_cd_account_is_over_balance() {
+		defaultCertificateOfDepositAccountTestSetUp();
+		assertTrue(commandValidator.validate("withdraw 12345678 1200.51"));
+	}
+
+	// ---Withdraw Time Tests---
+
+	// @Test
+	public void invalid_if_attempt_to_withdraw_twice_from_savings_account_in_the_same_month() {
+		defaultSavingsAccountTestSetUp();
+		commandValidator.validate("withdraw 12345678 1200.51");
+		assertFalse(commandValidator.validate("withdraw 12345678 1200.51"));
+	}
+
+	// @Test
+	public void valid_if_attempt_to_withdraw_twice_from_savings_account_in_different_months() {
+		defaultSavingsAccountTestSetUp();
+		commandValidator.validate("withdraw 12345678 1200.51");
+		// pass time 1
+		assertTrue(commandValidator.validate("withdraw 12345678 1200.51"));
+	}
+
+	// @Test
+	public void invalid_if_attempt_to_do_a_full_withdraw_from_cd_before_12_months_have_passed_since_creation() {
+		// pass time 11
+		assertFalse(commandValidator.validate("withdraw 12345678 1200.50"));
+	}
+
+	// @Test
+	public void valid_if_attempt_to_do_a_full_withdraw_from_cd_12_months_have_passed_since_creation() {
+		defaultCertificateOfDepositAccountTestSetUp();
+		assertTrue(commandValidator.validate("withdraw 12345678 1200.50"));
+	}
+
+	// @Test
+	public void valid_if_attempt_to_do_a_full_withdraw_from_cd_after_12_months_have_passed_since_creation() {
+		// pass time 13
+		assertTrue(commandValidator.validate("withdraw 12345678 1200.50"));
+	}
 }

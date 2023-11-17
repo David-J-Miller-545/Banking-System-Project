@@ -15,10 +15,13 @@ public class WithdrawValidator {
 				if (account != null) {
 					if (!(withdrawAmount < 0)) {
 						if (account.type().equals("savings") && withdrawAmount <= 1000) {
-							return true;
+							Savings savings = (Savings) account;
+							return !savings.hasWithdrawnThisMonth();
 						} else if (account.type().equals("checking") && withdrawAmount <= 400) {
 							return true;
 						} else if (account.type().equals("cd") && withdrawAmount >= account.balance()) {
+							CertificateOfDeposit cd = (CertificateOfDeposit) account;
+							// return (cd.monthsSinceCreation() >= 12);
 							return true;
 						} else {
 							return false;
