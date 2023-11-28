@@ -12,11 +12,11 @@ public class DepositValidator {
 
 			Account account = bank.getAccount(id);
 			if (arguments.length == 3) {
-				if (account != null && (account.type().equals("savings") || account.type().equals("checking"))) {
+				if (account != null && (account.type() == 's' || account.type() == 'c')) {
 					if (!(depositAmount < 0)) {
-						if (account.type().equals("savings") && depositAmount <= 2500) {
+						if (account.type() == 's' && depositAmount <= 2500) {
 							return true;
-						} else if (account.type().equals("checking") && depositAmount <= 1000) {
+						} else if (account.type() == 'c' && depositAmount <= 1000) {
 							return true;
 						} else {
 							return false;

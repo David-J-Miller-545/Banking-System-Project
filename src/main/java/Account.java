@@ -2,16 +2,16 @@ public abstract class Account {
 	private double balance;
 	private double apr;
 	private int id;
-	private String type;
+	private char type;
 
-	public Account(int id, double balance, double apr, String type) {
+	public Account(int id, double balance, double apr, char type) {
 		this.balance = balance;
 		this.apr = apr;
 		this.id = id;
 		this.type = type;
 	}
 
-	public String type() {
+	public char type() {
 		return type;
 	}
 

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 public class WithdrawValidatorTest {
 	private final String DEFAULT_VALID_GENERAL_TEST_STRING = "withdraw 12345678 250";
 	Account account;
+	private String DEFAULT_VALID_CD_TEST_STRING;
 	private CommandValidator commandValidator;
 	private Bank bank;
 
@@ -35,6 +36,8 @@ public class WithdrawValidatorTest {
 	private void defaultCertificateOfDepositAccountTestSetUp() {
 		account = new CertificateOfDeposit(12345678, 1200.50, .5);
 		bank.addAccount(account);
+		bank.passTime(12);
+		DEFAULT_VALID_CD_TEST_STRING = "withdraw 12345678 " + Double.toString(account.balance());
 	}
 
 	// Command Layout: "deposit (existingID) (depositAmount)"
@@ -95,7 +98,7 @@ public class WithdrawValidatorTest {
 	@Test
 	public void valid_if_given_id_belongs_to_a_cd_account() {
 		defaultCertificateOfDepositAccountTestSetUp();
-		assertTrue(commandValidator.validate("withdraw 12345678 1200.5"));
+		assertTrue(commandValidator.validate(DEFAULT_VALID_CD_TEST_STRING));
 	}
 
 	// ---Withdraw Amount Tests---
@@ -151,53 +154,54 @@ public class WithdrawValidatorTest {
 	@Test
 	public void invalid_if_withdraw_amount_from_a_cd_account_is_under_balance() {
 		defaultCertificateOfDepositAccountTestSetUp();
-		assertFalse(commandValidator.validate("withdraw 12345678 1200.49"));
+		assertFalse(commandValidator.validate("withdraw 12345678 " + Double.toString(account.balance() - .01)));
 	}
 
 	@Test
 	public void valid_if_withdraw_amount_from_a_cd_account_is_the_balance() {
 		defaultCertificateOfDepositAccountTestSetUp();
-		assertTrue(commandValidator.validate("withdraw 12345678 1200.50"));
+		assertTrue(commandValidator.validate(DEFAULT_VALID_CD_TEST_STRING));
 	}
 
 	@Test
 	public void valid_if_withdraw_amount_from_a_cd_account_is_over_balance() {
 		defaultCertificateOfDepositAccountTestSetUp();
-		assertTrue(commandValidator.validate("withdraw 12345678 1200.51"));
+		assertTrue(commandValidator.validate("withdraw 12345678 " + Double.toString(account.balance() + .01)));
 	}
 
 	// ---Withdraw Time Tests---
 
-	// @Test
+	@Test
 	public void invalid_if_attempt_to_withdraw_twice_from_savings_account_in_the_same_month() {
 		defaultSavingsAccountTestSetUp();
-		commandValidator.validate("withdraw 12345678 1200.51");
-		assertFalse(commandValidator.validate("withdraw 12345678 1200.51"));
+		commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING);
+		assertFalse(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
 	}
 
-	// @Test
+	@Test
 	public void valid_if_attempt_to_withdraw_twice_from_savings_account_in_different_months() {
 		defaultSavingsAccountTestSetUp();
-		commandValidator.validate("withdraw 12345678 1200.51");
-		// pass time 1
-		assertTrue(commandValidator.validate("withdraw 12345678 1200.51"));
+		commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING);
+		bank.passTime(1);
+		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
 	}
 
-	// @Test
+	@Test
 	public void invalid_if_attempt_to_do_a_full_withdraw_from_cd_before_12_months_have_passed_since_creation() {
-		// pass time 11
-		assertFalse(commandValidator.validate("withdraw 12345678 1200.50"));
+		bank.passTime(11);
+		assertFalse(commandValidator.validate("withdraw 12345678 " + Double.toString(account.balance())));
 	}
 
-	// @Test
+	@Test
 	public void valid_if_attempt_to_do_a_full_withdraw_from_cd_12_months_have_passed_since_creation() {
 		defaultCertificateOfDepositAccountTestSetUp();
-		assertTrue(commandValidator.validate("withdraw 12345678 1200.50"));
+		assertTrue(commandValidator.validate(DEFAULT_VALID_CD_TEST_STRING));
 	}
 
-	// @Test
+	@Test
 	public void valid_if_attempt_to_do_a_full_withdraw_from_cd_after_12_months_have_passed_since_creation() {
-		// pass time 13
-		assertTrue(commandValidator.validate("withdraw 12345678 1200.50"));
+		defaultCertificateOfDepositAccountTestSetUp();
+		bank.passTime(1);
+		assertTrue(commandValidator.validate("withdraw 12345678 " + Double.toString(account.balance())));
 	}
 }

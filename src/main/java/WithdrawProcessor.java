@@ -8,6 +8,6 @@ public class WithdrawProcessor {
 	public void process(String[] arguments) {
 		int id = Integer.parseInt(arguments[1]);
 		double amount = Double.parseDouble(arguments[2]);
-		bank.getAccount(id).withdraw(amount);
+		bank.withdrawFromAccount(amount, id);
 	}
 }

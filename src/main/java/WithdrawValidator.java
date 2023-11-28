@@ -14,15 +14,14 @@ public class WithdrawValidator {
 			if (arguments.length == 3) {
 				if (account != null) {
 					if (!(withdrawAmount < 0)) {
-						if (account.type().equals("savings") && withdrawAmount <= 1000) {
+						if (account.type() == 's' && withdrawAmount <= 1000) {
 							Savings savings = (Savings) account;
-							return !savings.hasWithdrawnThisMonth();
-						} else if (account.type().equals("checking") && withdrawAmount <= 400) {
+							return !(savings.hasWithdrawnThisMonth());
+						} else if (account.type() == 'c' && withdrawAmount <= 400) {
 							return true;
-						} else if (account.type().equals("cd") && withdrawAmount >= account.balance()) {
+						} else if (account.type() == 'd' && withdrawAmount >= account.balance()) {
 							CertificateOfDeposit cd = (CertificateOfDeposit) account;
-							// return (cd.monthsSinceCreation() >= 12);
-							return true;
+							return (cd.monthsSinceCreation() >= 12);
 						} else {
 							return false;
 						}
