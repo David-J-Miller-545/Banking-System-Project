@@ -1,11 +1,13 @@
 public class CommandProcessor extends CommandFunction {
 	private CreateProcessor createProcessor;
 	private DepositProcessor depositProcessor;
+	private WithdrawProcessor withdrawProcessor;
 
 	public CommandProcessor(Bank bank) {
 		super(bank);
 		createProcessor = new CreateProcessor(bank);
 		depositProcessor = new DepositProcessor(bank);
+		withdrawProcessor = new WithdrawProcessor(bank);
 	}
 
 	public void process(String command) {
@@ -16,6 +18,9 @@ public class CommandProcessor extends CommandFunction {
 			break;
 		case "deposit":
 			depositProcessor.process(arguments);
+			break;
+		case "withdraw":
+			withdrawProcessor.process(arguments);
 			break;
 		default:
 			break;

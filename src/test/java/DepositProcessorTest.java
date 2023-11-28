@@ -8,7 +8,7 @@ public class DepositProcessorTest {
 	private Account account;
 
 	@Test
-	public void proccesor_deposits_money_in_account() {
+	public void processor_deposits_money_in_account() {
 		bank = new Bank();
 		commandProcessor = new CommandProcessor(bank);
 		account = new Checking(12345678, .6);
