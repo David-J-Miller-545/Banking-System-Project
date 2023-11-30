@@ -9,12 +9,14 @@ public class WithdrawValidatorTest {
 	Account account;
 	private String DEFAULT_VALID_CD_TEST_STRING;
 	private CommandValidator commandValidator;
+	private CommandProcessor commandProcessor;
 	private Bank bank;
 
 	@BeforeEach
 	public void setUp() {
 		bank = new Bank();
 		commandValidator = new CommandValidator(bank);
+		commandProcessor = new CommandProcessor(bank);
 	}
 
 	public void defaultGeneralAccountTestSetUp() {
@@ -36,11 +38,11 @@ public class WithdrawValidatorTest {
 	private void defaultCertificateOfDepositAccountTestSetUp() {
 		account = new CertificateOfDeposit(12345678, 1200.50, .5);
 		bank.addAccount(account);
-		bank.passTime(12);
+		commandProcessor.process("pass 12");
 		DEFAULT_VALID_CD_TEST_STRING = "withdraw 12345678 " + Double.toString(account.balance());
 	}
 
-	// Command Layout: "deposit (existingID) (depositAmount)"
+	// Command Layout: "deposit (existingID) (withdrawAmount)"
 
 	@Test
 	public void valid_if_first_argument_is_withdraw_keyword() {
@@ -182,14 +184,14 @@ public class WithdrawValidatorTest {
 	public void valid_if_attempt_to_withdraw_twice_from_savings_account_in_different_months() {
 		defaultSavingsAccountTestSetUp();
 		commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING);
-		bank.passTime(1);
+		commandProcessor.process("pass 1");
 		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
 	}
 
 	@Test
 	public void invalid_if_attempt_to_do_a_full_withdraw_from_cd_before_12_months_have_passed_since_creation() {
 		account = new CertificateOfDeposit(12345678, 1200.50, .5);
-		bank.passTime(11);
+		commandProcessor.process("pass 11");
 		assertFalse(commandValidator.validate("withdraw 12345678 " + Double.toString(account.balance())));
 	}
 
@@ -202,7 +204,7 @@ public class WithdrawValidatorTest {
 	@Test
 	public void valid_if_attempt_to_do_a_full_withdraw_from_cd_after_12_months_have_passed_since_creation() {
 		defaultCertificateOfDepositAccountTestSetUp();
-		bank.passTime(1); // 12 + 1 = 13
+		commandProcessor.process("pass 1");
 		assertTrue(commandValidator.validate("withdraw 12345678 " + Double.toString(account.balance())));
 	}
 }

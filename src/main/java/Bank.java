@@ -35,7 +35,8 @@ public class Bank {
 	}
 
 	public void removeAccount(int id) {
-		accounts.remove(getAccount(id));
+		Account account = getAccount(id);
+		accounts.remove(account);
 	}
 
 	public ArrayList<Account> getAccounts() {
@@ -50,31 +51,5 @@ public class Bank {
 	public void withdrawFromAccount(double amount, int id) {
 		Account account = getAccount(id);
 		account.withdraw(amount);
-	}
-
-	public void passTime(int months) {
-		for (Account account : getAccounts()) {
-			if (account.balance() == 0) {
-				removeAccount(account.id());
-			} else if (account.balance() < 100) {
-				if (25 * months > account.balance()) {
-					removeAccount(account.id());
-				} else {
-					withdrawFromAccount(25 * months, account.id());
-				}
-			} else {
-				if (account.type() == 's' || account.type() == 'c') {
-					depositInAccount(aprCalculation(account.balance(), account.apr(), months), account.id());
-					if (account.type() == 's') {
-						Savings savings = (Savings) account;
-						savings.resetWithdrawnThisMonth();
-					}
-				} else if (account.type() == 'd') {
-					depositInAccount(aprCalculation(account.balance(), account.apr(), months * 4), account.id());
-					CertificateOfDeposit cd = (CertificateOfDeposit) account;
-					cd.incrementMonthsSinceCreation(months);
-				}
-			}
-		}
 	}
 }

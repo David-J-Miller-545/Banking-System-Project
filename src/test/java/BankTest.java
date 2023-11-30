@@ -89,15 +89,25 @@ public class BankTest {
 	}
 
 	@Test
+	public void bank_can_remove_accounts() {
+		bank.addAccount(account);
+		bank.removeAccount(account.id());
+		assertEquals(0, bank.numAccounts());
+	}
+
+	@Test
 	public void bank_apr_calculation_works_for_one_month() {
-		// Change to double equals
-		assertEquals(1000 * (.005 / 12), bank.aprCalculation(1000, .5, 1));
+		double monthlyAPR = (account.apr() / 100) / 12;
+		double balance = account.balance();
+		assertEquals((balance * (1 + monthlyAPR)) - balance, bank.aprCalculation(balance, account.apr(), 1));
 	}
 
 	@Test
 	public void bank_apr_calculation_works_for_two_months() {
-		// Change to double equals
-		assertEquals((1000 + (1000 * (.005 / 12))) * (.005 / 12), bank.aprCalculation(1000, .5, 2));
+		double monthlyAPR = (account.apr() / 100) / 12;
+		double balance = account.balance();
+		assertEquals((balance * (1 + monthlyAPR) * (1 + monthlyAPR)) - balance,
+				bank.aprCalculation(balance, account.apr(), 2));
 	}
 
 }
