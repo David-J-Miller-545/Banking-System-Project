@@ -29,6 +29,14 @@ public class BankTest {
 	}
 
 	@Test
+	public void bank_has_no_accounts_when_one_is_added_to_it_and_then_removed() {
+		bank.addAccount(account);
+		bank.removeAccount(account.id());
+
+		assertEquals(0, bank.numAccounts());
+	}
+
+	@Test
 	public void bank_has_two_accounts_when_two_are_added_to_it() {
 		Account account1 = new Checking(10000002, 0);
 		bank.addAccount(account);
@@ -78,6 +86,18 @@ public class BankTest {
 		bank.withdrawFromAccount(TEST_TRANSACTION, account.id());
 
 		assertEquals(TEST_TRANSACTION, account.balance());
+	}
+
+	@Test
+	public void bank_apr_calculation_works_for_one_month() {
+		// Change to double equals
+		assertEquals(1000 * (.005 / 12), bank.aprCalculation(1000, .5, 1));
+	}
+
+	@Test
+	public void bank_apr_calculation_works_for_two_months() {
+		// Change to double equals
+		assertEquals((1000 + (1000 * (.005 / 12))) * (.005 / 12), bank.aprCalculation(1000, .5, 2));
 	}
 
 }

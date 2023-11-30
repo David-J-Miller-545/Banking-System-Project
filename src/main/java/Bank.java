@@ -7,10 +7,9 @@ public class Bank {
 		double newBalance = balance;
 		double monthlyAPR = monthlyAPRPercentage(apr);
 
-		for (int i = 0; i > months; i++) {
-			newBalance += newBalance * monthlyAPR;
+		for (int i = 0; i < months; i++) {
+			newBalance *= 1 + monthlyAPR;
 		}
-
 		return newBalance - balance;
 	}
 
@@ -54,7 +53,7 @@ public class Bank {
 	}
 
 	public void passTime(int months) {
-		for (Account account : accounts) {
+		for (Account account : getAccounts()) {
 			if (account.balance() == 0) {
 				removeAccount(account.id());
 			} else if (account.balance() < 100) {
