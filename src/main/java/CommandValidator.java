@@ -2,6 +2,7 @@ public class CommandValidator extends CommandFunction {
 	private CreateValidator createValidator;
 	private DepositValidator depositValidator;
 	private WithdrawValidator withdrawValidator;
+	private TransferValidator transferValidator;
 	private PassTimeValidator passTimeValidator;
 
 	public CommandValidator(Bank bank) {
@@ -9,6 +10,7 @@ public class CommandValidator extends CommandFunction {
 		createValidator = new CreateValidator(bank);
 		depositValidator = new DepositValidator(bank);
 		withdrawValidator = new WithdrawValidator(bank);
+		transferValidator = new TransferValidator(bank, depositValidator, withdrawValidator);
 		passTimeValidator = new PassTimeValidator(bank);
 	}
 
@@ -21,6 +23,8 @@ public class CommandValidator extends CommandFunction {
 			return depositValidator.validate(arguments);
 		case "withdraw":
 			return withdrawValidator.validate(arguments);
+		case "transfer":
+			return transferValidator.validate(arguments);
 		case "pass":
 			return passTimeValidator.validate(arguments);
 		default:
