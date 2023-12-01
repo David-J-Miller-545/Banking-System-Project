@@ -10,6 +10,9 @@ public class TransferValidator {
 	}
 
 	public boolean validate(String[] arguments) {
+		if (arguments.length != 4) {
+			return false;
+		}
 		try {
 			int fromID = Integer.parseInt(arguments[1]);
 			int toID = Integer.parseInt(arguments[2]);

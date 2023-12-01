@@ -15,6 +15,26 @@ public class PassTimeValidatorTest {
 	}
 
 	@Test
+	public void valid_if_first_argument_is_pass_keyword() {
+		assertTrue(commandValidator.validate("pass 1"));
+	}
+
+	@Test
+	public void valid_if_command_contains_2_arguments() {
+		assertTrue(commandValidator.validate("pass 1"));
+	}
+
+	@Test
+	public void invalid_if_given_more_than_2_arguments() {
+		assertFalse(commandValidator.validate("pass 1 Nope"));
+	}
+
+	@Test
+	public void invalid_if_given_less_than_2_arguments() {
+		assertFalse(commandValidator.validate("pass"));
+	}
+
+	@Test
 	public void invalid_if_number_of_months_is_string() {
 		assertFalse(commandValidator.validate("pass time"));
 	}
