@@ -16,41 +16,31 @@ public class PassTimeProcessor {
 		double minimumBalanceFee = 25.00;
 		int numAccounts = bank.getAccounts().size();
 
-		for (int i = 0; i < numAccounts; i++) {
-			Account account = bank.getAccounts().get(i);
-			if (account.balance() == 0) {
-				i--;
-				numAccounts--;
-				bank.removeAccount(account.id());
-				account = null;
-			} else if (account.balance() < minimumBalance) {
-				if (minimumBalanceFee * months > account.balance()) {
+		for (int m = 0; m < months; m++) {
+			for (int i = 0; i < numAccounts; i++) {
+				Account account = bank.getAccounts().get(i);
+				if (account.balance() == 0) {
+					i--;
+					numAccounts--;
 					bank.removeAccount(account.id());
-				} else {
-					bank.withdrawFromAccount(minimumBalanceFee * months, account.id());
+					account = null;
+				} else if (account.balance() < minimumBalance) {
+					bank.withdrawFromAccount(minimumBalanceFee, account.id());
 				}
-			}
-			if (account != null) {
-				if (account.type() == 's' || account.type() == 'c') {
-					if (account.balance() < minimumBalance) { // Accounts for apr each month after hit with minimum
-																// balance fee
-						for (int m = months; m > 0; m--) {
-							bank.depositInAccount(bank.aprCalculation(account.balance() + minimumBalanceFee * (m - 1),
-									account.apr(), months), account.id());
+				if (account != null) {
+					if (account.type() == 's' || account.type() == 'c') {
+						bank.depositInAccount(bank.aprCalculation(account.balance(), account.apr(), 1), account.id());
+						if (account.type() == 's') {
+							Savings savings = (Savings) account;
+							if (savings.hasWithdrawnThisMonth()) {
+								savings.resetWithdrawnThisMonth();
+							}
 						}
-					} else {
-						bank.depositInAccount(bank.aprCalculation(account.balance(), account.apr(), months),
-								account.id());
+					} else if (account.type() == 'd') {
+						bank.depositInAccount(bank.aprCalculation(account.balance(), account.apr(), 4), account.id());
+						CertificateOfDeposit cd = (CertificateOfDeposit) account;
+						cd.incrementMonthsSinceCreation();
 					}
-					if (account.type() == 's') {
-						Savings savings = (Savings) account;
-						savings.resetWithdrawnThisMonth();
-					}
-				} else if (account.type() == 'd') {
-					bank.depositInAccount(bank.aprCalculation(account.balance(), account.apr(), months * 4),
-							account.id());
-					CertificateOfDeposit cd = (CertificateOfDeposit) account;
-					cd.incrementMonthsSinceCreation(months);
 				}
 			}
 		}

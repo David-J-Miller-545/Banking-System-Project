@@ -10,7 +10,7 @@ public class CertificateOfDeposit extends Account {
 		return age;
 	}
 
-	public void incrementMonthsSinceCreation(int months) {
-		age += months;
+	public void incrementMonthsSinceCreation() {
+		age++;
 	}
 }
