@@ -43,6 +43,15 @@ public class BankAccountTest {
 	}
 
 	@Test
+	public void account_balance_decreases_to_zero_when_withdrawn_more_than_balance() {
+		account = new Savings(TEST_ID, 0);
+		account.deposit(0.01);
+		account.withdraw(TEST_TRANSACTION);
+
+		assertEquals(0, account.balance());
+	}
+
+	@Test
 	public void account_when_deposited_twice_into_works() {
 		account = new Savings(TEST_ID, 0);
 		account.deposit(TEST_TRANSACTION);

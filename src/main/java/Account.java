@@ -2,11 +2,17 @@ public abstract class Account {
 	private double balance;
 	private double apr;
 	private int id;
+	private char type;
 
-	public Account(int id, double balance, double apr) {
+	public Account(int id, double balance, double apr, char type) {
 		this.balance = balance;
 		this.apr = apr;
 		this.id = id;
+		this.type = type;
+	}
+
+	public char type() {
+		return type;
 	}
 
 	public double balance() {
@@ -22,8 +28,10 @@ public abstract class Account {
 	}
 
 	public void withdraw(double amount) {
-		if ((balance - amount) >= 0) {
+		if (amount <= balance) {
 			balance -= amount;
+		} else {
+			balance = 0;
 		}
 	}
 
