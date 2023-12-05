@@ -7,7 +7,7 @@ public class CommandStorage extends CommandFunction {
 	private Bank bank;
 
 	public CommandStorage(Bank bank) {
-		super(bank);
+		this.bank = bank;
 		invalidCommands = new ArrayList<String>();
 		accountHistory = new ArrayList<String>();
 		output = new ArrayList<String>();
@@ -46,6 +46,7 @@ public class CommandStorage extends CommandFunction {
 				}
 			}
 		}
+
 		output.addAll(invalidCommands);
 		return output;
 	}
@@ -70,7 +71,7 @@ public class CommandStorage extends CommandFunction {
 		String idAsString = Integer.toString(idNum);
 		String formattedID = "";
 
-		while (8 - idAsString.length() > 0) {
+		while (8 - idAsString.length() - formattedID.length() > 0) {
 			formattedID += "0";
 		}
 

@@ -6,7 +6,6 @@ public class CommandValidator extends CommandFunction {
 	private PassTimeValidator passTimeValidator;
 
 	public CommandValidator(Bank bank) {
-		super(bank);
 		createValidator = new CreateValidator(bank);
 		depositValidator = new DepositValidator(bank);
 		withdrawValidator = new WithdrawValidator(bank);

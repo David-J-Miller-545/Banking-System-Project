@@ -6,7 +6,6 @@ public class CommandProcessor extends CommandFunction {
 	private PassTimeProcessor passTimeProcessor;
 
 	public CommandProcessor(Bank bank) {
-		super(bank);
 		createProcessor = new CreateProcessor(bank);
 		depositProcessor = new DepositProcessor(bank);
 		withdrawProcessor = new WithdrawProcessor(bank);
