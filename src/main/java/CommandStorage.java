@@ -52,7 +52,7 @@ public class CommandStorage extends CommandFunction {
 
 	public String accountStatus(Account account) {
 		String accountType = "";
-		String id = "";
+		String id = formatID(account.id());
 		String balance = String.format("%.2f", account.balance());
 		String apr = String.format("%.2f", account.apr());
 
@@ -64,5 +64,18 @@ public class CommandStorage extends CommandFunction {
 			accountType = "Cd";
 		}
 		return accountType + " " + id + " " + balance + " " + apr;
+	}
+
+	public String formatID(int idNum) {
+		String idAsString = Integer.toString(idNum);
+		String formattedID = "";
+
+		while (8 - idAsString.length() > 0) {
+			formattedID += "0";
+		}
+
+		formattedID += idAsString;
+
+		return formattedID;
 	}
 }
