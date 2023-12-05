@@ -16,8 +16,12 @@ public class MasterControl {
 		for (String command : input) {
 			if (commandValidator.validate(command)) {
 				commandProcessor.process(command);
+				if (!commandValidator.readCommandArguments(command)[0].equals("create")
+						&& !commandValidator.readCommandArguments(command)[0].equals("pass")) {
+					commandStorage.storeHistory(command);
+				}
 			} else {
-				commandStorage.store(command);
+				commandStorage.storeInvalid(command);
 			}
 		}
 		return commandStorage.get();
