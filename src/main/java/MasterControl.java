@@ -15,15 +15,19 @@ public class MasterControl {
 	public List<String> start(List<String> input) {
 		for (String command : input) {
 			if (commandValidator.validate(command)) {
-				commandProcessor.process(command);
-				if (!commandValidator.readCommandArguments(command)[0].equals("create")
-						&& !commandValidator.readCommandArguments(command)[0].equals("pass")) {
-					commandStorage.storeHistory(command);
-				}
+				processCommand(command);
 			} else {
 				commandStorage.storeInvalid(command);
 			}
 		}
 		return commandStorage.get();
+	}
+
+	public void processCommand(String command) {
+		commandProcessor.process(command);
+		if (!commandStorage.readCommandArguments(command)[0].equals("create")
+				&& !commandStorage.readCommandArguments(command)[0].equals("pass")) {
+			commandStorage.storeHistory(command);
+		}
 	}
 }

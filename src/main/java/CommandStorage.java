@@ -34,17 +34,17 @@ public class CommandStorage extends CommandFunction {
 	public ArrayList<String> getAccountHistory(Account account) {
 		ArrayList<String> thisAccountsHistory = new ArrayList<String>();
 		for (String command : accountHistory) {
-			String[] arguments = readCommandArguments(command);
-			if (Integer.parseInt(arguments[1]) == account.id()) {
+			if (accountIdIsInCommand(command, account)) {
 				thisAccountsHistory.add(command);
-			}
-			if (arguments[0].equals("transfer")) {
-				if (Integer.parseInt(arguments[2]) == account.id()) {
-					thisAccountsHistory.add(command);
-				}
 			}
 		}
 		return thisAccountsHistory;
+	}
+
+	public boolean accountIdIsInCommand(String command, Account account) {
+		String[] arguments = readCommandArguments(command);
+		return (Integer.parseInt(arguments[1]) == account.id())
+				|| (arguments[0].equals("transfer") && Integer.parseInt(arguments[2]) == account.id());
 	}
 
 	public String accountStatus(Account account) {

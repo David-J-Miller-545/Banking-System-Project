@@ -9,6 +9,17 @@ public class TransferValidator {
 		this.withdrawValidator = withdrawValidator;
 	}
 
+	public boolean validateAccounts(String[] arguments, Account sender, Account receiver, double transferAmount) {
+		if (sender != null && receiver != null) {
+			if (sender.type() == 'd' || receiver.type() == 'd') {
+				return false;
+			}
+			return validateWithdrawingAndDepositing(arguments, sender, transferAmount);
+		} else {
+			return false;
+		}
+	}
+
 	public boolean validateWithdrawingAndDepositing(String[] arguments, Account sender, double transferAmount) {
 		String[] validateCommandArgs = { "VALIDATE", arguments[1], arguments[3] };
 		if (withdrawValidator.validate(validateCommandArgs)) {
@@ -28,21 +39,11 @@ public class TransferValidator {
 			return false;
 		}
 		try {
-			int fromID = Integer.parseInt(arguments[1]);
-			int toID = Integer.parseInt(arguments[2]);
+			Account sender = bank.getAccount(Integer.parseInt(arguments[1]));
+			Account receiver = bank.getAccount(Integer.parseInt(arguments[2]));
 			double transferAmount = Double.parseDouble(arguments[3]);
-			Account sender = bank.getAccount(fromID);
-			Account receiver = bank.getAccount(toID);
 
-			if (sender != null && receiver != null) {
-				if (sender.type() == 'd' || receiver.type() == 'd') {
-					return false;
-				}
-				return validateWithdrawingAndDepositing(arguments, sender, transferAmount);
-			} else {
-				return false;
-			}
-
+			return validateAccounts(arguments, sender, receiver, transferAmount);
 		} catch (Exception e) {
 			return false;
 		}

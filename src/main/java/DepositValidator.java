@@ -6,33 +6,33 @@ public class DepositValidator {
 	}
 
 	public boolean validateDepositAmount(Account account, double depositAmount) {
-		if (!(depositAmount < 0)) {
-			if ((account.type() == 's' && depositAmount <= 2500) || (account.type() == 'c' && depositAmount <= 1000)) {
-				return true;
-			} else {
-				return false;
-			}
+		if (depositAmount < 0) {
+			return false;
+		}
+
+		if ((account.type() == 's' && depositAmount <= 2500) || (account.type() == 'c' && depositAmount <= 1000)) {
+			return true;
 		} else {
 			return false;
 		}
 	}
 
 	public boolean validate(String[] arguments) {
+		if (arguments.length != 3) {
+			return false;
+		}
+
 		try {
 			int id = Integer.parseInt(arguments[1]);
 			double depositAmount = Double.parseDouble(arguments[2]);
 
 			Account account = bank.getAccount(id);
-			if (arguments.length == 3) {
-				if (account != null && (account.type() == 's' || account.type() == 'c')) {
-					return validateDepositAmount(account, depositAmount);
-				} else {
-					return false;
-				}
+
+			if (account != null && (account.type() == 's' || account.type() == 'c')) {
+				return validateDepositAmount(account, depositAmount);
 			} else {
 				return false;
 			}
-
 		} catch (Exception e) {
 			return false;
 		}
