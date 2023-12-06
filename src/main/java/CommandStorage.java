@@ -22,6 +22,7 @@ public class CommandStorage extends CommandFunction {
 	}
 
 	public ArrayList<String> get() {
+		output.clear();
 		for (Account account : bank.getAccounts()) {
 			output.add(accountStatus(account));
 			for (String command : accountHistory) {

@@ -47,9 +47,8 @@ public class PassTimeProcessorTest {
 
 	@Test
 	public void cd_account_accrues_interest_4_times_in_one_month() {
-		bank.removeAccount(account.id()); // THIS SHOULDNT HAVE TO BE HERE
 		double oldBalance = 1000;
-		Account account2 = new CertificateOfDeposit(12345678, oldBalance, 5);
+		Account account2 = new CertificateOfDeposit(23456789, oldBalance, 5);
 		double monthlyAPR = (account2.apr() / 100) / 12;
 
 		bank.addAccount(account2);
