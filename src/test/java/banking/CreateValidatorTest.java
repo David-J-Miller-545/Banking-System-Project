@@ -131,13 +131,23 @@ public class CreateValidatorTest {
 	// ---APR Value Tests---
 
 	@Test
+	public void invalid_if_given_a_negative_float_for_apr_value() {
+		assertFalse(commandValidator.validate("create savings 12345678 -.01"));
+	}
+
+	@Test
+	public void valid_if_given_apr_value_is_0() {
+		assertTrue(commandValidator.validate("create savings 12345678 0"));
+	}
+
+	@Test
 	public void valid_if_given_an_apr_value_that_is_a_positive_float_between_0_and_10() {
 		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
 	}
 
 	@Test
-	public void invalid_if_given_a_negative_float_for_apr_value() {
-		assertFalse(commandValidator.validate("create savings 12345678 -.01"));
+	public void valid_if_given_apr_value_is_10() {
+		assertTrue(commandValidator.validate("create savings 12345678 10"));
 	}
 
 	@Test

@@ -179,8 +179,8 @@ public class TransferValidatorTest {
 	@Test
 	public void invalid_if_deposit_command_for_similar_case_is_invalid() {
 		defaultGeneralAccountsTestSetUp();
-		assertEquals(commandValidator.validate("deposit 23456789 1000.01"),
-				commandValidator.validate("transfer 12345678 23456789 1000.01"));
+		assertEquals(commandValidator.validate("deposit 34567899 400"),
+				commandValidator.validate("transfer 12345678 34567899 400"));
 	}
 
 	@Test
