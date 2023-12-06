@@ -1,11 +1,5 @@
 public class PassTimeValidator {
 
-	private Bank bank;
-
-	public PassTimeValidator(Bank bank) {
-		this.bank = bank;
-	}
-
 	public boolean validate(String[] arguments) {
 		if (arguments.length != 2) {
 			return false;

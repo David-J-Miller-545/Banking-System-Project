@@ -10,7 +10,7 @@ public class CommandValidator extends CommandFunction {
 		depositValidator = new DepositValidator(bank);
 		withdrawValidator = new WithdrawValidator(bank);
 		transferValidator = new TransferValidator(bank, depositValidator, withdrawValidator);
-		passTimeValidator = new PassTimeValidator(bank);
+		passTimeValidator = new PassTimeValidator();
 	}
 
 	public boolean validate(String command) {

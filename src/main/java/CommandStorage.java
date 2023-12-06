@@ -25,23 +25,26 @@ public class CommandStorage extends CommandFunction {
 		output.clear();
 		for (Account account : bank.getAccounts()) {
 			output.add(accountStatus(account));
-			for (String command : accountHistory) {
-				String[] arguments = readCommandArguments(command);
-				if (arguments[0].equals("transfer")) {
-					if (Integer.parseInt(arguments[1]) == account.id()
-							|| Integer.parseInt(arguments[2]) == account.id()) {
-						output.add(command);
-					}
-				} else {
-					if (Integer.parseInt(arguments[1]) == account.id()) {
-						output.add(command);
-					}
+			output.addAll(getAccountHistory(account));
+		}
+		output.addAll(invalidCommands);
+		return output;
+	}
+
+	public ArrayList<String> getAccountHistory(Account account) {
+		ArrayList<String> thisAccountsHistory = new ArrayList<String>();
+		for (String command : accountHistory) {
+			String[] arguments = readCommandArguments(command);
+			if (Integer.parseInt(arguments[1]) == account.id()) {
+				thisAccountsHistory.add(command);
+			}
+			if (arguments[0].equals("transfer")) {
+				if (Integer.parseInt(arguments[2]) == account.id()) {
+					thisAccountsHistory.add(command);
 				}
 			}
 		}
-
-		output.addAll(invalidCommands);
-		return output;
+		return thisAccountsHistory;
 	}
 
 	public String accountStatus(Account account) {

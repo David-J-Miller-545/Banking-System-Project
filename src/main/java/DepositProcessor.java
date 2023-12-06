@@ -6,8 +6,6 @@ public class DepositProcessor {
 	}
 
 	public void process(String[] arguments) {
-		int id = Integer.parseInt(arguments[1]);
-		double amount = Double.parseDouble(arguments[2]);
-		bank.depositInAccount(amount, id);
+		bank.depositInAccount(Double.parseDouble(arguments[2]), Integer.parseInt(arguments[1]));
 	}
 }

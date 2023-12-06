@@ -4,7 +4,7 @@ public abstract class Account {
 	private int id;
 	private char type;
 
-	public Account(int id, double balance, double apr, char type) {
+	Account(int id, double balance, double apr, char type) {
 		this.balance = balance;
 		this.apr = apr;
 		this.id = id;

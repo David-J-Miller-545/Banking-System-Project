@@ -5,6 +5,18 @@ public class DepositValidator {
 		this.bank = bank;
 	}
 
+	public boolean validateDepositAmount(Account account, double depositAmount) {
+		if (!(depositAmount < 0)) {
+			if ((account.type() == 's' && depositAmount <= 2500) || (account.type() == 'c' && depositAmount <= 1000)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
 	public boolean validate(String[] arguments) {
 		try {
 			int id = Integer.parseInt(arguments[1]);
@@ -13,17 +25,7 @@ public class DepositValidator {
 			Account account = bank.getAccount(id);
 			if (arguments.length == 3) {
 				if (account != null && (account.type() == 's' || account.type() == 'c')) {
-					if (!(depositAmount < 0)) {
-						if (account.type() == 's' && depositAmount <= 2500) {
-							return true;
-						} else if (account.type() == 'c' && depositAmount <= 1000) {
-							return true;
-						} else {
-							return false;
-						}
-					} else {
-						return false;
-					}
+					return validateDepositAmount(account, depositAmount);
 				} else {
 					return false;
 				}

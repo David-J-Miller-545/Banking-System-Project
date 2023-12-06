@@ -11,7 +11,7 @@ public class PassTimeProcessor {
 
 	}
 
-	private void passTime(int months) {
+	public void passTime(int months) {
 		double minimumBalance = 100.00;
 		double minimumBalanceFee = 25.00;
 		int numAccounts = bank.getAccounts().size();
@@ -28,21 +28,25 @@ public class PassTimeProcessor {
 					bank.withdrawFromAccount(minimumBalanceFee, account.id());
 				}
 				if (account != null) {
-					if (account.type() == 's' || account.type() == 'c') {
-						bank.depositInAccount(bank.aprCalculation(account.balance(), account.apr(), 1), account.id());
-						if (account.type() == 's') {
-							Savings savings = (Savings) account;
-							if (savings.hasWithdrawnThisMonth()) {
-								savings.resetWithdrawnThisMonth();
-							}
-						}
-					} else if (account.type() == 'd') {
-						bank.depositInAccount(bank.aprCalculation(account.balance(), account.apr(), 4), account.id());
-						CertificateOfDeposit cd = (CertificateOfDeposit) account;
-						cd.incrementMonthsSinceCreation();
-					}
+					accrueInterest(account);
 				}
 			}
+		}
+	}
+
+	public void accrueInterest(Account account) {
+		if (account.type() == 's' || account.type() == 'c') {
+			bank.depositInAccount(bank.aprCalculation(account.balance(), account.apr(), 1), account.id());
+			if (account.type() == 's') {
+				Savings savings = (Savings) account;
+				if (savings.hasWithdrawnThisMonth()) {
+					savings.resetWithdrawnThisMonth();
+				}
+			}
+		} else if (account.type() == 'd') {
+			bank.depositInAccount(bank.aprCalculation(account.balance(), account.apr(), 4), account.id());
+			CertificateOfDeposit cd = (CertificateOfDeposit) account;
+			cd.incrementMonthsSinceCreation();
 		}
 	}
 }
