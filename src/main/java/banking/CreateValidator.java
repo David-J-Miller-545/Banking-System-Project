@@ -16,7 +16,7 @@ public class CreateValidator {
 		return (bank.getAccount(id) != null) ? true : false;
 	}
 
-	public boolean validateCheckingOrSavings(String[] arguments, int id, double apr) {
+	public boolean validateCheckingOrSavings(String[] arguments, double apr) {
 		if (arguments.length != 4) {
 			return false;
 		}
@@ -28,7 +28,7 @@ public class CreateValidator {
 		}
 	}
 
-	public boolean validateCD(String[] arguments, int id, double apr) {
+	public boolean validateCD(String[] arguments, double apr) {
 		if (arguments.length != 5) {
 			return false;
 		}
@@ -61,9 +61,9 @@ public class CreateValidator {
 			double apr = Double.parseDouble(arguments[3]);
 
 			if (accountType.equals("savings") || accountType.equals("checking")) {
-				return validateCheckingOrSavings(arguments, id, apr);
+				return validateCheckingOrSavings(arguments, apr);
 			} else if (accountType.equals("cd")) {
-				return validateCD(arguments, id, apr);
+				return validateCD(arguments, apr);
 			} else { // banking.Account type is not checking, savings, or cd
 				return false;
 			}
