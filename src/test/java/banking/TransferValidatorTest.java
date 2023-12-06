@@ -28,12 +28,6 @@ public class TransferValidatorTest {
 
 	// Command Layout: "transfer (existingFromID) (existingToID) (withdrawAmount)
 
-	@Test
-	public void valid_if_first_argument_is_transfer_keyword() {
-		defaultGeneralAccountsTestSetUp();
-		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
-	}
-
 	// ---Existing ID Tests---
 
 	@Test
@@ -50,6 +44,12 @@ public class TransferValidatorTest {
 	}
 
 	@Test
+	public void invalid_if_given_a_num_number_for_first_id() {
+		defaultGeneralAccountsTestSetUp();
+		assertFalse(commandValidator.validate("transfer aBcDeFgH 23456789 400"));
+	}
+
+	@Test
 	public void valid_if_second_given_8_digit_id_belongs_to_an_account_within_the_bank() {
 		defaultGeneralAccountsTestSetUp();
 		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
@@ -60,6 +60,12 @@ public class TransferValidatorTest {
 		fromAccount = new Checking(12345678, .6);
 		bank.addAccount(fromAccount);
 		assertFalse(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
+	}
+
+	@Test
+	public void invalid_if_given_a_num_number_for_second_id() {
+		defaultGeneralAccountsTestSetUp();
+		assertFalse(commandValidator.validate("transfer 12345678 AbCdEfGh 400"));
 	}
 
 	// ---Argument Count Tests---
@@ -145,6 +151,12 @@ public class TransferValidatorTest {
 	}
 
 	// ---Transfer Amount Tests---
+
+	@Test
+	public void invalid_if_given_a_num_number_for_withdraw_amount() {
+		defaultGeneralAccountsTestSetUp();
+		assertFalse(commandValidator.validate("transfer 12345678 23456789 AbC"));
+	}
 
 	@Test
 	public void invalid_if_transfer_amount_is_negative() {

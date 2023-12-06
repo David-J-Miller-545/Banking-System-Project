@@ -56,9 +56,9 @@ public class CommandStorage extends CommandFunction {
 		String apr = String.format("%.2f", account.apr());
 
 		if (account.type() == 's') {
-			accountType = "banking.Savings";
+			accountType = "Savings";
 		} else if (account.type() == 'c') {
-			accountType = "banking.Checking";
+			accountType = "Checking";
 		} else if (account.type() == 'd') {
 			accountType = "Cd";
 		}

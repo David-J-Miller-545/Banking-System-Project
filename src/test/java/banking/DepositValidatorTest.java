@@ -35,12 +35,6 @@ public class DepositValidatorTest {
 
 	// Command Layout: "deposit (existingID) (depositAmount)"
 
-	@Test
-	public void valid_if_first_argument_is_deposit_keyword() {
-		defaultGeneralAccountTestSetUp();
-		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
-	}
-
 	// ---Existing ID Tests---
 
 	@Test
@@ -52,6 +46,11 @@ public class DepositValidatorTest {
 	@Test
 	public void invalid_if_given_8_digit_id_does_not_belong_to_an_account_within_the_bank() {
 		assertFalse(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
+	}
+
+	@Test
+	public void invalid_if_given_a_num_number_for_id() {
+		assertFalse(commandValidator.validate("deposit aBcDeFgH 500"));
 	}
 
 	// ---Argument Count Tests---
@@ -96,6 +95,12 @@ public class DepositValidatorTest {
 	}
 
 	// ---Deposit Amount Tests---
+
+	@Test
+	public void invalid_if_given_a_num_number_for_deposit_amount() {
+		defaultGeneralAccountTestSetUp();
+		assertFalse(commandValidator.validate("deposit 12345678 AbC"));
+	}
 
 	@Test
 	public void invalid_if_deposit_amount_is_negative() {

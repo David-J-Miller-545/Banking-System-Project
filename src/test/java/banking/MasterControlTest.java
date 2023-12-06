@@ -74,7 +74,7 @@ public class MasterControlTest {
 		List<String> actual = masterControl.start(input);
 
 		assertEquals(5, actual.size());
-		assertEquals("banking.Savings 12345678 1000.50 0.60", actual.get(0));
+		assertEquals("Savings 12345678 1000.50 0.60", actual.get(0));
 		assertEquals("Deposit 12345678 700", actual.get(1));
 		assertEquals("Transfer 98765432 12345678 300", actual.get(2));
 		assertEquals("Cd 23456789 2000.00 1.20", actual.get(3));

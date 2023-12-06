@@ -61,7 +61,7 @@ public class CommandStorageTest {
 	public void command_storage_can_return_status_of_an_account_that_has_been_created() {
 		singleAccountSetUp();
 
-		assertEquals("banking.Checking 12345678 0.00 5.00", commandStorage.get().get(0));
+		assertEquals("Checking 12345678 0.00 5.00", commandStorage.get().get(0));
 	}
 
 	@Test
@@ -69,7 +69,7 @@ public class CommandStorageTest {
 		singleAccountSetUp();
 		bank.depositInAccount(300, account.id());
 
-		assertEquals("banking.Checking 12345678 300.00 5.00", commandStorage.get().get(0));
+		assertEquals("Checking 12345678 300.00 5.00", commandStorage.get().get(0));
 	}
 
 	@Test
@@ -111,7 +111,7 @@ public class CommandStorageTest {
 		account = new Checking(1, 5);
 		bank.addAccount(account);
 
-		assertEquals("banking.Checking 00000001 0.00 5.00", commandStorage.get().get(0));
+		assertEquals("Checking 00000001 0.00 5.00", commandStorage.get().get(0));
 	}
 
 	@Test
@@ -120,8 +120,8 @@ public class CommandStorageTest {
 
 		// Assert List
 		ArrayList<String> testOutput = new ArrayList<String>();
-		testOutput.add("banking.Checking 12345678 0.00 5.00");
-		testOutput.add("banking.Savings 23456789 0.00 6.00");
+		testOutput.add("Checking 12345678 0.00 5.00");
+		testOutput.add("Savings 23456789 0.00 6.00");
 		assertTrue(commandStorage.get().equals(testOutput));
 	}
 
@@ -133,9 +133,9 @@ public class CommandStorageTest {
 
 		// Assert List
 		ArrayList<String> testOutput = new ArrayList<String>();
-		testOutput.add("banking.Checking 12345678 0.00 5.00");
+		testOutput.add("Checking 12345678 0.00 5.00");
 		testOutput.add("Deposit 12345678 0");
-		testOutput.add("banking.Savings 23456789 0.00 6.00");
+		testOutput.add("Savings 23456789 0.00 6.00");
 		testOutput.add("Withdraw 23456789 0");
 		assertTrue(commandStorage.get().equals(testOutput));
 	}
@@ -147,9 +147,9 @@ public class CommandStorageTest {
 
 		// Assert List
 		ArrayList<String> testOutput = new ArrayList<String>();
-		testOutput.add("banking.Checking 12345678 0.00 5.00");
+		testOutput.add("Checking 12345678 0.00 5.00");
 		testOutput.add("TrAnSfEr 12345678 23456789 0");
-		testOutput.add("banking.Savings 23456789 0.00 6.00");
+		testOutput.add("Savings 23456789 0.00 6.00");
 		testOutput.add("TrAnSfEr 12345678 23456789 0");
 		assertTrue(commandStorage.get().equals(testOutput));
 	}
@@ -163,13 +163,37 @@ public class CommandStorageTest {
 
 		// Assert List
 		ArrayList<String> testOutput = new ArrayList<String>();
-		testOutput.add("banking.Checking 12345678 0.00 5.00");
+		testOutput.add("Checking 12345678 0.00 5.00");
 		testOutput.add("TrAnSfEr 12345678 23456789 0");
 		testOutput.add("Deposit 12345678 0");
-		testOutput.add("banking.Savings 23456789 0.00 6.00");
+		testOutput.add("Savings 23456789 0.00 6.00");
 		testOutput.add("TrAnSfEr 12345678 23456789 0");
 		testOutput.add("Withdraw 23456789 0");
 
 		assertTrue(commandStorage.get().equals(testOutput));
 	}
+
+	@Test
+	public void command_storage_rebuilds_output_at_the_beginning_of_get() {
+		doubleAccountSetUp();
+		commandStorage.storeHistory("TrAnSfEr 12345678 23456789 0");
+		commandStorage.storeHistory("Deposit 12345678 0");
+		commandStorage.storeHistory("Withdraw 23456789 0");
+
+		commandStorage.get();
+		commandStorage.storeHistory("Withdraw 12345678 0");
+
+		// Assert List
+		ArrayList<String> testOutput = new ArrayList<String>();
+		testOutput.add("Checking 12345678 0.00 5.00");
+		testOutput.add("TrAnSfEr 12345678 23456789 0");
+		testOutput.add("Deposit 12345678 0");
+		testOutput.add("Withdraw 12345678 0");
+		testOutput.add("Savings 23456789 0.00 6.00");
+		testOutput.add("TrAnSfEr 12345678 23456789 0");
+		testOutput.add("Withdraw 23456789 0");
+
+		assertTrue(commandStorage.get().equals(testOutput));
+	}
+
 }

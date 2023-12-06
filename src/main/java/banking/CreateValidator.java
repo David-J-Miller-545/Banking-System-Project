@@ -8,8 +8,8 @@ public class CreateValidator {
 		this.bank = bank;
 	}
 
-	public boolean validateID(int id) {
-		return (Integer.toString(id).length() == 8);
+	public boolean validateIDLength(String id) {
+		return (id.length() == 8);
 	}
 
 	public boolean accountExists(int id) {
@@ -21,7 +21,7 @@ public class CreateValidator {
 			return false;
 		}
 
-		if (validateIdAndAPR(id, apr)) {
+		if (validateIdAndAPR(arguments[2], apr)) {
 			return true;
 		} else {
 			return false;
@@ -33,7 +33,7 @@ public class CreateValidator {
 			return false;
 		}
 
-		if (validateIdAndAPR(id, apr)) {
+		if (validateIdAndAPR(arguments[2], apr)) {
 			double balance = Double.parseDouble(arguments[4]);
 			return (1000 <= balance && balance <= 10000);
 		} else {
@@ -41,8 +41,9 @@ public class CreateValidator {
 		}
 	}
 
-	public boolean validateIdAndAPR(int id, double apr) {
-		if (validateID(id) && !accountExists(id)) {
+	public boolean validateIdAndAPR(String idArg, double apr) {
+		int id = Integer.parseInt(idArg);
+		if (validateIDLength(idArg) && !accountExists(id)) {
 			return validateAPR(apr);
 		} else {
 			return false;

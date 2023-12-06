@@ -12,7 +12,7 @@ public class TransferValidator {
 	}
 
 	public boolean validateAccounts(String[] arguments, Account sender, Account receiver, double transferAmount) {
-		if (sender == null && receiver == null) {
+		if (sender == null || receiver == null) {
 			return false;
 		}
 		if (sender.type() == 'd' || receiver.type() == 'd') {

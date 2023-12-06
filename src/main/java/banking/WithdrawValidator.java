@@ -26,9 +26,7 @@ public class WithdrawValidator {
 		case 's':
 			return validateSavings(account, withdrawAmount);
 		case 'c':
-			if (withdrawAmount <= 400) {
-				return true;
-			}
+			return (withdrawAmount <= 400);
 		case 'd':
 			return validateCD(account, withdrawAmount);
 		default:

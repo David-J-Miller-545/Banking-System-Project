@@ -25,12 +25,7 @@ public class CreateValidatorTest {
 	// Command Layout = "create (accountType) (uniqueID) (aprValue)"
 	// [5th argument will be initialBalance only if accountType = "cd"]
 
-	@Test
-	public void valid_if_first_argument_is_create_keyword() {
-		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
-	}
-
-	// ---banking.Account Type Tests---
+	// ---Account Type Tests---
 
 	@Test
 	public void valid_if_creating_savings_account() {
@@ -104,6 +99,11 @@ public class CreateValidatorTest {
 	@Test
 	public void valid_if_given_an_8_digit_id() {
 		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
+	}
+
+	@Test
+	public void valid_if_given_an_8_digit_id_that_is_all_0s() {
+		assertTrue(commandValidator.validate("create savings 00000000 0.6"));
 	}
 
 	@Test

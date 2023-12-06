@@ -17,11 +17,6 @@ public class PassTimeValidatorTest {
 	}
 
 	@Test
-	public void valid_if_first_argument_is_pass_keyword() {
-		assertTrue(commandValidator.validate("pass 1"));
-	}
-
-	@Test
 	public void valid_if_command_contains_2_arguments() {
 		assertTrue(commandValidator.validate("pass 1"));
 	}
