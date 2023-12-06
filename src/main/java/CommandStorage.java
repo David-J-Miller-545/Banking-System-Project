@@ -21,14 +21,6 @@ public class CommandStorage extends CommandFunction {
 		accountHistory.add(command);
 	}
 
-	public ArrayList<String> getInvalidCommands() {
-		return invalidCommands;
-	}
-
-	public ArrayList<String> getHistory() {
-		return accountHistory;
-	}
-
 	public ArrayList<String> get() {
 		for (Account account : bank.getAccounts()) {
 			output.add(accountStatus(account));

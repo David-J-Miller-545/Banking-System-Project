@@ -24,12 +24,11 @@ public class TransferValidator {
 				if (sender.type() == 'd' || receiver.type() == 'd') {
 					return false;
 				}
-				String[] validateCommandArgs = { "withdraw", arguments[1], arguments[3] };
+				String[] validateCommandArgs = { "VALIDATE", arguments[1], arguments[3] };
 				if (withdrawValidator.validate(validateCommandArgs)) {
 					if (sender.balance() < transferAmount) {
 						transferAmount = sender.balance();
 					}
-					validateCommandArgs[0] = "create";
 					validateCommandArgs[1] = arguments[2];
 					validateCommandArgs[2] = Double.toString(transferAmount);
 					return depositValidator.validate(validateCommandArgs);

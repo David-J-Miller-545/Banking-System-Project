@@ -184,6 +184,7 @@ public class WithdrawValidatorTest {
 	public void valid_if_attempt_to_withdraw_twice_from_savings_account_in_different_months() {
 		defaultSavingsAccountTestSetUp();
 		commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING);
+		account.withdraw(500);
 		commandProcessor.process("pass 1");
 		assertTrue(commandValidator.validate(DEFAULT_VALID_GENERAL_TEST_STRING));
 	}
@@ -191,6 +192,7 @@ public class WithdrawValidatorTest {
 	@Test
 	public void invalid_if_attempt_to_do_a_full_withdraw_from_cd_before_12_months_have_passed_since_creation() {
 		account = new CertificateOfDeposit(12345678, 1200.50, .5);
+		bank.addAccount(account);
 		commandProcessor.process("pass 11");
 		assertFalse(commandValidator.validate("withdraw 12345678 " + Double.toString(account.balance())));
 	}
@@ -198,6 +200,7 @@ public class WithdrawValidatorTest {
 	@Test
 	public void valid_if_attempt_to_do_a_full_withdraw_from_cd_12_months_have_passed_since_creation() {
 		defaultCertificateOfDepositAccountTestSetUp();
+		System.out.println(commandValidator.validate(DEFAULT_VALID_CD_TEST_STRING));
 		assertTrue(commandValidator.validate(DEFAULT_VALID_CD_TEST_STRING));
 	}
 

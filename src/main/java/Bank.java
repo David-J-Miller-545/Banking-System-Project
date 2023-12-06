@@ -8,7 +8,7 @@ public class Bank {
 		double monthlyAPR = monthlyAPRPercentage(apr);
 
 		for (int i = 0; i < months; i++) {
-			newBalance *= 1 + monthlyAPR;
+			newBalance *= (1 + monthlyAPR);
 		}
 		return newBalance - balance;
 	}
