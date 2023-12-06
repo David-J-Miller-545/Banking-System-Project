@@ -9,12 +9,7 @@ public class DepositValidator {
 		if (depositAmount < 0) {
 			return false;
 		}
-
-		if ((account.type() == 's' && depositAmount <= 2500) || (account.type() == 'c' && depositAmount <= 1000)) {
-			return true;
-		} else {
-			return false;
-		}
+		return ((account.type() == 's' && depositAmount <= 2500) || (account.type() == 'c' && depositAmount <= 1000));
 	}
 
 	public boolean validate(String[] arguments) {

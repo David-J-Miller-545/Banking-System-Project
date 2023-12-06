@@ -10,14 +10,14 @@ public class TransferValidator {
 	}
 
 	public boolean validateAccounts(String[] arguments, Account sender, Account receiver, double transferAmount) {
-		if (sender != null && receiver != null) {
-			if (sender.type() == 'd' || receiver.type() == 'd') {
-				return false;
-			}
-			return validateWithdrawingAndDepositing(arguments, sender, transferAmount);
-		} else {
+		if (sender == null && receiver == null) {
 			return false;
 		}
+		if (sender.type() == 'd' || receiver.type() == 'd') {
+			return false;
+		}
+		return validateWithdrawingAndDepositing(arguments, sender, transferAmount);
+
 	}
 
 	public boolean validateWithdrawingAndDepositing(String[] arguments, Account sender, double transferAmount) {

@@ -5,20 +5,31 @@ public class WithdrawValidator {
 		this.bank = bank;
 	}
 
+	public boolean validateSavings(Account account, double withdrawAmount) {
+		Savings savings = (Savings) account;
+		return (withdrawAmount <= 1000 && !(savings.hasWithdrawnThisMonth()));
+	}
+
+	public boolean validateCD(Account account, double withdrawAmount) {
+		CertificateOfDeposit cd = (CertificateOfDeposit) account;
+		return (cd.monthsSinceCreation() >= 12) && (withdrawAmount >= account.balance());
+	}
+
 	public boolean validateWithdrawAmount(Account account, double withdrawAmount) {
-		if (!(withdrawAmount < 0)) {
-			if (account.type() == 's' && withdrawAmount <= 1000) {
-				Savings savings = (Savings) account;
-				return !(savings.hasWithdrawnThisMonth());
-			} else if (account.type() == 'c' && withdrawAmount <= 400) {
+		if ((withdrawAmount < 0)) {
+			return false;
+		}
+
+		switch (account.type()) {
+		case 's':
+			return validateSavings(account, withdrawAmount);
+		case 'c':
+			if (withdrawAmount <= 400) {
 				return true;
-			} else if (account.type() == 'd' && withdrawAmount >= account.balance()) {
-				CertificateOfDeposit cd = (CertificateOfDeposit) account;
-				return (cd.monthsSinceCreation() >= 12);
-			} else {
-				return false;
 			}
-		} else {
+		case 'd':
+			return validateCD(account, withdrawAmount);
+		default:
 			return false;
 		}
 	}

@@ -33,11 +33,7 @@ public class CreateValidator {
 
 		if (validateIdAndAPR(id, apr)) {
 			double balance = Double.parseDouble(arguments[4]);
-			if (1000 <= balance && balance <= 10000) {
-				return true;
-			} else {
-				return false;
-			}
+			return (1000 <= balance && balance <= 10000);
 		} else {
 			return false;
 		}
