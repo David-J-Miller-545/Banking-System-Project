@@ -88,7 +88,7 @@ public class TransferValidatorTest {
 		assertFalse(commandValidator.validate("transfer 12345678 23456789"));
 	}
 
-	// ---ID banking.Account Type Tests---
+	// ---ID Account Type Tests---
 
 	@Test
 	public void invalid_if_self_to_self_transfer() {

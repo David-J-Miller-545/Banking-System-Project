@@ -73,7 +73,7 @@ public class DepositValidatorTest {
 		assertFalse(commandValidator.validate("deposit 12345678"));
 	}
 
-	// ---ID banking.Account Type Tests---
+	// ---ID Account Type Tests---
 
 	@Test
 	public void valid_if_given_id_belong_to_a_checking_account() {

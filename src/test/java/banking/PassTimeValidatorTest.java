@@ -16,6 +16,10 @@ public class PassTimeValidatorTest {
 		commandValidator = new CommandValidator(bank);
 	}
 
+	// Command Layout: "pass (numMonths)"
+
+	// ---Argument Count Tests---
+
 	@Test
 	public void valid_if_command_contains_2_arguments() {
 		assertTrue(commandValidator.validate("pass 1"));
@@ -31,6 +35,8 @@ public class PassTimeValidatorTest {
 		assertFalse(commandValidator.validate("pass"));
 	}
 
+	// ---Month Count Syntax Tests---
+
 	@Test
 	public void invalid_if_number_of_months_is_string() {
 		assertFalse(commandValidator.validate("pass time"));
@@ -45,6 +51,8 @@ public class PassTimeValidatorTest {
 	public void invalid_if_number_of_months_is_an_integer_represented_by_a_decimal() {
 		assertFalse(commandValidator.validate("pass 6.0"));
 	}
+
+	// ---Month Count Boundary Tests---
 
 	@Test
 	public void invalid_if_number_of_months_is_less_than_1() {

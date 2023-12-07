@@ -18,6 +18,8 @@ public class BankTest {
 
 	}
 
+	// ---Account Storage Tests---
+
 	@Test
 	public void bank_has_zero_accounts_when_created() {
 		assertEquals(0, bank.numAccounts());
@@ -28,14 +30,6 @@ public class BankTest {
 		bank.addAccount(account);
 
 		assertEquals(1, bank.numAccounts());
-	}
-
-	@Test
-	public void bank_has_no_accounts_when_one_is_added_to_it_and_then_removed() {
-		bank.addAccount(account);
-		bank.removeAccount(account.id());
-
-		assertEquals(0, bank.numAccounts());
 	}
 
 	@Test
@@ -53,6 +47,8 @@ public class BankTest {
 
 		assertEquals(account, bank.getAccount(account.id()));
 	}
+
+	// ---Account Transaction Through Bank Tests---
 
 	@Test
 	public void correct_account_gets_money_when_deposit_by_id_through_bank() {
@@ -90,12 +86,24 @@ public class BankTest {
 		assertEquals(TEST_TRANSACTION, account.balance());
 	}
 
+	// ---Account Removal Tests---
+
 	@Test
 	public void bank_can_remove_accounts() {
 		bank.addAccount(account);
 		bank.removeAccount(account.id());
 		assertEquals(0, bank.numAccounts());
 	}
+
+	@Test
+	public void bank_has_no_accounts_when_one_is_added_to_it_and_then_removed() {
+		bank.addAccount(account);
+		bank.removeAccount(account.id());
+
+		assertEquals(0, bank.numAccounts());
+	}
+
+	// ---APR Calculation Tests---
 
 	@Test
 	public void bank_apr_calculation_works_for_one_month() {

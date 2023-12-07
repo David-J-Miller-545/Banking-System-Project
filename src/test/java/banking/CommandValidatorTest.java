@@ -19,24 +19,16 @@ public class CommandValidatorTest {
 		bank.addAccount(account);
 	}
 
+	// ---Keyword Tests---
+
 	@Test
 	public void invalid_if_first_argument_is_unknown_keyword() {
 		assertFalse(commandValidator.validate("dumbo savings 00000001 0.6"));
 	}
 
 	@Test
-	public void validator_is_case_insensitive() {
-		assertTrue(commandValidator.validate("CrEaTe SAvIngS 00000001 0.6"));
-	}
-
-	@Test
 	public void valid_if_first_argument_is_create_keyword() {
 		assertTrue(commandValidator.validate("create savings 00000001 0.6"));
-	}
-
-	@Test
-	public void invalid_if_multiple_spaces_in_middle_of_command() {
-		assertFalse(commandValidator.validate("create savings  00000001 0.6"));
 	}
 
 	@Test
@@ -60,5 +52,29 @@ public class CommandValidatorTest {
 		bank.addAccount(account2);
 		account.deposit(200);
 		assertTrue(commandValidator.validate("transfer 12345678 23456789 200"));
+	}
+
+	// ---Casing Test---
+
+	@Test
+	public void validator_is_case_insensitive() {
+		assertTrue(commandValidator.validate("CrEaTe SAvIngS 00000001 0.6"));
+	}
+
+	// ---Spacing Tests---
+
+	@Test
+	public void invalid_if_multiple_spaces_in_middle_of_command() {
+		assertFalse(commandValidator.validate("create savings  00000001 0.6"));
+	}
+
+	@Test
+	public void invalid_if_contains_spaces_at_beginning_of_command() {
+		assertFalse(commandValidator.validate("  create savings 00000001 0.6"));
+	}
+
+	@Test
+	public void valid_if_contains_spaces_at_end_of_command() {
+		assertTrue(commandValidator.validate("create savings 00000001 0.6  "));
 	}
 }

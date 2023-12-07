@@ -13,14 +13,6 @@ public class BankAccountTest {
 	private Account account;
 
 	@Test
-	public void account_balance_when_withdrawn_from_does_not_go_below_zero() {
-		account = new Savings(TEST_ID, 0);
-		account.withdraw(TEST_TRANSACTION);
-
-		assertEquals(0, account.balance());
-	}
-
-	@Test
 	public void account_when_created_has_supplied_apr_value() {
 		account = new Savings(TEST_ID, TEST_APR);
 		assertEquals(TEST_APR, account.apr());

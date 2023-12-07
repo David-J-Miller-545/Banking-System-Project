@@ -84,7 +84,7 @@ public class WithdrawValidatorTest {
 		assertFalse(commandValidator.validate("withdraw 12345678"));
 	}
 
-	// ---ID banking.Account Type Tests---
+	// ---ID Account Type Tests---
 
 	@Test
 	public void valid_if_given_id_belong_to_a_checking_account() {
@@ -178,7 +178,7 @@ public class WithdrawValidatorTest {
 		assertTrue(commandValidator.validate("withdraw 12345678 " + Double.toString(account.balance() + .01)));
 	}
 
-	// ---Withdraw Time Tests---
+	// ---Withdraw Time Dependent Tests---
 
 	@Test
 	public void invalid_if_attempt_to_withdraw_twice_from_savings_account_in_the_same_month() {

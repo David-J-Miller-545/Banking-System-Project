@@ -30,6 +30,8 @@ public class CommandStorageTest {
 		bank.addAccount(account2);
 	}
 
+	// ---Invalid Command Storage and Retrieval Tests---
+
 	@Test
 	public void command_storage_can_store_an_invalid_command_and_give_it_back() {
 		commandStorage.storeInvalid("1 2 3 4");
@@ -57,6 +59,8 @@ public class CommandStorageTest {
 		assertTrue(commandStorage.get().equals(testCommands));
 	}
 
+	// ---Account Status Retrieval Tests---
+
 	@Test
 	public void command_storage_can_return_status_of_an_account_that_has_been_created() {
 		singleAccountSetUp();
@@ -79,6 +83,8 @@ public class CommandStorageTest {
 
 		assertEquals(0, commandStorage.get().size());
 	}
+
+	// ---Account History Storage and Retrieval Tests---
 
 	@Test
 	public void command_storage_can_store_a_valid_account_transaction_and_give_it_back() {
@@ -106,6 +112,8 @@ public class CommandStorageTest {
 		assertEquals(0, commandStorage.get().size());
 	}
 
+	// ---ID Formatting Tests---
+
 	@Test
 	public void command_storage_formats_id_to_be_8_digits() {
 		account = new Checking(1, 5);
@@ -113,6 +121,8 @@ public class CommandStorageTest {
 
 		assertEquals("Checking 00000001 0.00 5.00", commandStorage.get().get(0));
 	}
+
+	// ---Multiple Account Tests---
 
 	@Test
 	public void command_storage_can_return_status_of_two_accounts() {
@@ -173,6 +183,8 @@ public class CommandStorageTest {
 		assertTrue(commandStorage.get().equals(testOutput));
 	}
 
+	// ---Rebuild output Test---
+
 	@Test
 	public void command_storage_rebuilds_output_at_the_beginning_of_get() {
 		doubleAccountSetUp();
@@ -180,15 +192,25 @@ public class CommandStorageTest {
 		commandStorage.storeHistory("Deposit 12345678 0");
 		commandStorage.storeHistory("Withdraw 23456789 0");
 
-		commandStorage.get();
-		commandStorage.storeHistory("Withdraw 12345678 0");
-
-		// Assert List
+		// First Assert List
 		ArrayList<String> testOutput = new ArrayList<String>();
 		testOutput.add("Checking 12345678 0.00 5.00");
 		testOutput.add("TrAnSfEr 12345678 23456789 0");
 		testOutput.add("Deposit 12345678 0");
-		testOutput.add("Withdraw 12345678 0");
+		testOutput.add("Savings 23456789 0.00 6.00");
+		testOutput.add("TrAnSfEr 12345678 23456789 0");
+		testOutput.add("Withdraw 23456789 0");
+
+		assertTrue(commandStorage.get().equals(testOutput));
+
+		commandStorage.storeHistory("Withdraw 12345678 0");
+		testOutput.clear();
+
+		// Second Assert List
+		testOutput.add("Checking 12345678 0.00 5.00");
+		testOutput.add("TrAnSfEr 12345678 23456789 0");
+		testOutput.add("Deposit 12345678 0");
+		testOutput.add("Withdraw 12345678 0"); // New Entry
 		testOutput.add("Savings 23456789 0.00 6.00");
 		testOutput.add("TrAnSfEr 12345678 23456789 0");
 		testOutput.add("Withdraw 23456789 0");
