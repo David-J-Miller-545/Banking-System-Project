@@ -57,7 +57,7 @@ public class CreateValidator {
 	public boolean validate(String[] arguments) {
 		try {
 			String accountType = arguments[1];
-			int id = Integer.parseInt(arguments[2]);
+			Integer.parseInt(arguments[2]);
 			double apr = Double.parseDouble(arguments[3]);
 
 			if (accountType.equals("savings") || accountType.equals("checking")) {

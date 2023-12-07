@@ -42,6 +42,8 @@ public class CommandStorageTest {
 	public void command_can_store_2_invalid_commands() {
 		commandStorage.storeInvalid("1 2 3 4");
 		commandStorage.storeInvalid("a b c d");
+		assertEquals("1 2 3 4", commandStorage.get().get(0));
+		assertEquals("a b c d", commandStorage.get().get(1));
 		assertEquals(2, commandStorage.get().size());
 	}
 
@@ -64,7 +66,6 @@ public class CommandStorageTest {
 	@Test
 	public void command_storage_can_return_status_of_an_account_that_has_been_created() {
 		singleAccountSetUp();
-
 		assertEquals("Checking 12345678 0.00 5.00", commandStorage.get().get(0));
 	}
 
@@ -72,15 +73,15 @@ public class CommandStorageTest {
 	public void command_storage_can_return_the_current_status_of_an_account() {
 		singleAccountSetUp();
 		bank.depositInAccount(300, account.id());
-
 		assertEquals("Checking 12345678 300.00 5.00", commandStorage.get().get(0));
 	}
 
 	@Test
 	public void command_storage_doesnt_return_accounts_that_have_been_removed() {
 		singleAccountSetUp();
-		bank.removeAccount(account.id());
+		assertEquals(1, commandStorage.get().size());
 
+		bank.removeAccount(account.id());
 		assertEquals(0, commandStorage.get().size());
 	}
 
@@ -204,7 +205,7 @@ public class CommandStorageTest {
 		assertTrue(commandStorage.get().equals(testOutput));
 
 		commandStorage.storeHistory("Withdraw 12345678 0");
-		testOutput.clear();
+		testOutput.clear(); // To remake test list
 
 		// Second Assert List
 		testOutput.add("Checking 12345678 0.00 5.00");

@@ -49,10 +49,15 @@ public class CreateValidatorTest {
 
 	// ---Argument Count Tests---
 
-	// banking.Savings
+	// Savings
 	@Test
 	public void invalid_if_given_more_than_4_arguments_for_creating_a_savings_account() {
 		assertFalse(commandValidator.validate("create savings 12345678 0.6 Nope"));
+	}
+
+	@Test
+	public void valid_if_command_contains_4_arguments_for_creating_a_savings_account() {
+		assertTrue(commandValidator.validate(DEFAULT_VALID_TEST_SAVINGS_STRING));
 	}
 
 	@Test
@@ -60,7 +65,7 @@ public class CreateValidatorTest {
 		assertFalse(commandValidator.validate("create savings 12345678"));
 	}
 
-	// banking.Checking
+	// Checking
 
 	@Test
 	public void valid_if_command_contains_4_arguments_for_creating_a_checking_account() {
@@ -77,7 +82,7 @@ public class CreateValidatorTest {
 		assertFalse(commandValidator.validate("create checking 12345678"));
 	}
 
-	// CD
+	// Certificate Of Deposit
 
 	@Test
 	public void valid_if_command_contains_5_arguments_for_creating_a_cd_account() {
@@ -156,8 +161,17 @@ public class CreateValidatorTest {
 	}
 
 	@Test
-	public void valid_if_command_contains_4_arguments_for_creating_a_savings_account() {
-		assertTrue(commandValidator.validate(DEFAULT_VALID_TEST_SAVINGS_STRING));
+	public void all_create_command_apr_tests_for_cd() {
+		// invalid_if_given_a_negative_float_for_apr_value
+		assertFalse(commandValidator.validate("create cd 12345678 -.01 1000"));
+		// valid_if_given_apr_value_is_0
+		assertTrue(commandValidator.validate("create cd 12345678 0 1000"));
+		// valid_if_given_an_apr_value_that_is_a_positive_float_between_0_and_10
+		assertTrue(commandValidator.validate(DEFAULT_VALID_TEST_CD_STRING));
+		// valid_if_given_apr_value_is_10
+		assertTrue(commandValidator.validate("create cd 12345678 10 1000"));
+		// invalid_if_given_a_positive_float_greater_than_10_for_apr_value
+		assertFalse(commandValidator.validate("create cd 12345678 10.01 1000"));
 	}
 
 	// ---CD Initial Balance Tests---
