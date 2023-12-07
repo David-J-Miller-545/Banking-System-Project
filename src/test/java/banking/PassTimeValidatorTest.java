@@ -42,6 +42,11 @@ public class PassTimeValidatorTest {
 	}
 
 	@Test
+	public void invalid_if_number_of_months_is_an_integer_represented_by_a_decimal() {
+		assertFalse(commandValidator.validate("pass 6.0"));
+	}
+
+	@Test
 	public void invalid_if_number_of_months_is_less_than_1() {
 		assertFalse(commandValidator.validate("pass 0"));
 	}

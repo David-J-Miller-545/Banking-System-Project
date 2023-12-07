@@ -91,6 +91,14 @@ public class TransferValidatorTest {
 	// ---ID banking.Account Type Tests---
 
 	@Test
+	public void invalid_if_self_to_self_transfer() {
+		fromAccount = new Checking(12345678, .6);
+		fromAccount.deposit(750);
+		bank.addAccount(fromAccount);
+		assertFalse(commandValidator.validate("transfer 12345678 12345678 400"));
+	}
+
+	@Test
 	public void valid_if_checking_to_checking_transfer() {
 		fromAccount = new Checking(12345678, .6);
 		toAccount = new Checking(23456789, .7);

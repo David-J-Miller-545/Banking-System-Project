@@ -35,6 +35,11 @@ public class CommandValidatorTest {
 	}
 
 	@Test
+	public void invalid_if_multiple_spaces_in_middle_of_command() {
+		assertFalse(commandValidator.validate("create savings  00000001 0.6"));
+	}
+
+	@Test
 	public void valid_if_first_argument_is_deposit_keyword() {
 		assertTrue(commandValidator.validate("deposit 12345678 400"));
 	}
